@@ -15,4 +15,19 @@ public class Sub : MonoBehaviour
     {
         get { return "P" + (Player + 1); }
     }
+
+    public Transform Transform
+    {
+        get { return transform; }
+    }
+
+    public void Start()
+    {
+        SubManager.Instance.Subs.Add(this);
+    }
+
+    public void OnDestroy()
+    {
+        SubManager.Instance.Subs.Remove(this);
+    }
 }

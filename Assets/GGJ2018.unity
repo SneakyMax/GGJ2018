@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 138722313}
   - component: {fileID: 138722315}
   - component: {fileID: 138722316}
+  - component: {fileID: 138722317}
   m_Layer: 0
   m_Name: Sub 1
   m_TagString: Untagged
@@ -209,6 +210,7 @@ Transform:
   m_Children:
   - {fileID: 711165812}
   - {fileID: 1239827180}
+  - {fileID: 734212520}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -283,6 +285,20 @@ MonoBehaviour:
   FloatSinkRate: 50
   PitchRate: 10
   StrafeRate: 20
+--- !u!114 &138722317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 138722311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32aa95ad2b2cecb4cb9945cfdf7157f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FireInterval: 1
+  TorpedoPrefab: {fileID: 1255884240634904, guid: 68776cacd37e7994c938e8266e50de27,
+    type: 2}
 --- !u!1 &235364497
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,8 +460,9 @@ GameObject:
   m_Component:
   - component: {fileID: 281584608}
   - component: {fileID: 281584607}
+  - component: {fileID: 281584609}
   m_Layer: 0
-  m_Name: TaggableManager
+  m_Name: Controllers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -475,6 +492,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &281584609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 281584606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73eed6ba50a42d640976424354a881b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &286190983
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,6 +894,46 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad966694ff008d649ba730bb75b3e56f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &734212519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 734212520}
+  - component: {fileID: 734212521}
+  m_Layer: 0
+  m_Name: Torpedo Port
+  m_TagString: Untagged
+  m_Icon: {fileID: -6488666005112524639, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &734212520
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 734212519}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.596, y: -0.019, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 138722312}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &734212521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 734212519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1683cfecd968f6341b7c8060cbba9d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &766032723

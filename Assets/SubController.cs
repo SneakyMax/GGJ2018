@@ -47,11 +47,13 @@ public class SubController : MonoBehaviour
 
     private Rigidbody body;
     private Sub sub;
+    private GameObject modelObject;
 
     public void Awake()
     {
         body = GetComponent<Rigidbody>();
         sub = GetComponent<Sub>();
+        modelObject = GetComponentInChildren<SubBody>().gameObject;
     }
 
     public void FixedUpdate()
@@ -90,11 +92,21 @@ public class SubController : MonoBehaviour
             }
         }
 
+        var pitch = modelObject.transform.localRotation.eulerAngles.x;
+        if (pitch > 180)
+            pitch -= 360;
+
         if (RaiseState == RaiseState.Raising)
         {
             if (Mathf.Abs(body.velocity.z) < MaxRaiseLowerSpeed)
             {
                 body.AddForce(RaiseFactor * Vector3.up * FloatSinkRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+            }
+
+            
+            if (pitch > -MaxPitch)
+            {
+                modelObject.transform.localRotation = Quaternion.Euler(pitch - (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
             }
         }
         else if (RaiseState == RaiseState.Lowering)
@@ -103,10 +115,18 @@ public class SubController : MonoBehaviour
             {
                 body.AddForce(RaiseFactor * Vector3.down * FloatSinkRate * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
+            
+            if (pitch < MaxPitch)
+            {
+                modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
+            }
         }
         else if (RaiseState == RaiseState.Centering)
         {
-            //TODO change pitch back to level
+            if (Mathf.Abs(pitch) > 1)
+            {
+                modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * -Math.Sign(pitch)), 0, 0);
+            }
         }
 
         if (StrafeState == StrafeState.Left)
@@ -193,6 +213,7 @@ public class SubController : MonoBehaviour
     }
    
 }
+
 [Serializable]
 public enum RaiseState
 {

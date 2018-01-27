@@ -26,7 +26,7 @@ public class SubPingController : MonoBehaviour
 	
 	void Update ()
     {
-	    if (Input.GetKeyDown(KeyCode.Space) && !isPinging)
+	    if (Input.GetButton("Ping " + sub.Input) && !isPinging)
 	    {
 	        isPinging = true;
 	        pingStartTime = Time.time;

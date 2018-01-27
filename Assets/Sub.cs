@@ -10,4 +10,9 @@ public class Sub : MonoBehaviour
     /// 0-indexed
     /// </summary>
     public int Player;
+
+    public string Input
+    {
+        get { return "P" + (Player + 1); }
+    }
 }

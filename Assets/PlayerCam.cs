@@ -16,7 +16,7 @@ public class PlayerCam : MonoBehaviour
 
     public float IdentifiedMaxOpacity = 1;
 
-    private Material thisMaterial;
+    public Material thisMaterial;
 
     void Awake()
     {

@@ -79,9 +79,11 @@
 				float point_distance = distance(worldspace, _WorldSpaceCameraPos);
 
 				float closelight = 1.0 - (clamp((point_distance - _MinViewDist + _MinDistTransitionDist), 0, _MinDistTransitionDist) / _MinDistTransitionDist);
+				float smoothcloselight = smoothstep(0, 1, closelight);
+				
 				float pinglight = (_GradientRange - clamp(abs(_CurrentPingDist - point_distance), 0, _GradientRange)) / _GradientRange;
 				float smoothpinglight = smoothstep(0, 1, pinglight);
-				float dist = max(closelight, smoothpinglight);
+				float dist = max(smoothcloselight, smoothpinglight);
 				float4 lighted = lerp(_FogColor, color, dist);
 				float4 fadedIdentified = lerp(float4(0, 0, 0, 0), _IdentifiedColor, _IdentifiedOpacity);
 				return lerp(lighted, fadedIdentified, step(rawdepth, identified_depth));

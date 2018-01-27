@@ -33,3 +33,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+/sub_Data
+/sub.exe
+/UnityPlayer.dll
+/WinPixEventRuntime.dll

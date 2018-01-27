@@ -64,8 +64,8 @@ Material:
     - _GlossyReflections: 1
     - _GradientRange: 25
     - _Metallic: 0
-    - _MinDistTransitionDist: 4
-    - _MinViewDist: 6.64
+    - _MinDistTransitionDist: 10
+    - _MinViewDist: 15
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02

@@ -19,6 +19,8 @@ public class Torpedo : MonoBehaviour
 
     public float MaxLifetime = 10;
 
+    public float HomingRange = 30;
+
     public Sub Parent { get; set; }
 
     private Rigidbody body;
@@ -34,8 +36,9 @@ public class Torpedo : MonoBehaviour
 
     public void Start()
     {
-        speed = InitialSpeed;
+        speed = InitialSpeed + Parent.GetComponent<Rigidbody>().velocity.magnitude;
         direction = transform.forward;
+        StartCoroutine(BlowUpAfterTime());
     }
 
     private IEnumerator BlowUpAfterTime()
@@ -65,6 +68,10 @@ public class Torpedo : MonoBehaviour
                 var hitTargetable = hit.collider.gameObject.GetComponentInParent<TorpedoTargetable>();
 
                 if (hitTargetable == null || hitTargetable != targetable)
+                    continue;
+
+                var distance = Vector3.Distance(transform.position, targetable.transform.position);
+                if (distance > HomingRange)
                     continue;
 
                 var isInCone = Vector3.Angle(forward, vectorTorpToTargetable.normalized) < HomingConeHalfAngle;
@@ -104,7 +111,7 @@ public class Torpedo : MonoBehaviour
     {
         var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
         if (targetable != null)
-            targetable.HitByTorpedo();
+            targetable.HitByTorpedo(this);
         Explode();
     }
 

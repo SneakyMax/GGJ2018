@@ -33,6 +33,11 @@ public class Taggable : MonoBehaviour
 	    }
 	}
 
+    void OnDestroy()
+    {
+        TaggableManager.Instance.Remove(this);
+    }
+
     void Update ()
     {
 		

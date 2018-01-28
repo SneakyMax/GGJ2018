@@ -35,5 +35,7 @@ class SubTorpedoController : MonoBehaviour
         var newTorpedoObj = Instantiate(TorpedoPrefab, torpedoPoint.position, torpedoPoint.rotation);
         var torpedo = newTorpedoObj.GetComponent<Torpedo>();
         torpedo.Parent = sub;
+
+        TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
     }
 }

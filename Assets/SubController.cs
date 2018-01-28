@@ -73,6 +73,9 @@ public class SubController : MonoBehaviour
             return;
         }
 
+        if (body.isKinematic)
+            body.isKinematic = false;
+
         var forward = transform.forward;
 
         if (AccelState == AccelState.Accellerating)
@@ -187,7 +190,7 @@ public class SubController : MonoBehaviour
         if (sub.IsDestroyed)
             return;
 
-        var accel = Input.GetAxis("Vertical 2 " + sub.Input);
+        var accel = Input.GetAxis("Vertical " + sub.Input);
         if (accel < 0)
         {
             AccelState = AccelState.Accellerating;
@@ -201,7 +204,7 @@ public class SubController : MonoBehaviour
             AccelState = AccelState.Stopping;
         }
 
-        var horizontal = Input.GetAxis("Horizontal P" + (sub.Player + 1));
+        var horizontal = Input.GetAxis("Horizontal " + sub.Input);
         if (horizontal < 0)
         {
             TurnState = TurnState.TurnLeft;
@@ -217,7 +220,7 @@ public class SubController : MonoBehaviour
             TurnState = TurnState.Centering;
         }
 
-        var vertical = Input.GetAxis("Vertical P" + (sub.Player + 1));
+        var vertical = Input.GetAxis("Vertical 2 " + sub.Input);
         if (vertical > 0)
         {
             RaiseState = RaiseState.Raising;

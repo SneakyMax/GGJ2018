@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 4322907091141124}
   - component: {fileID: 54388350067033348}
   - component: {fileID: 114165618488348858}
+  - component: {fileID: 114989912513499868}
   m_Layer: 0
   m_Name: Torpedo
   m_TagString: Untagged
@@ -141,12 +142,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialSpeed: 0
-  Acceleration: 0.1
-  MaxSpeed: 5
+  Acceleration: 0.3
+  MaxSpeed: 10
   HomingConeHalfAngle: 10
   HomingTurnRate: 50
   MaxLifetime: 10
+  HomingRange: 30
   target: {fileID: 0}
+--- !u!114 &114989912513499868
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1255884240634904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b936b4a96a9559418948b7bb5ec3fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TagMaterial: {fileID: 2100000, guid: a9ec69be421b9f24ba6fdb121fce07f3, type: 2}
 --- !u!136 &136624691984965544
 CapsuleCollider:
   m_ObjectHideFlags: 1

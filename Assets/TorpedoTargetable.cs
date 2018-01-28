@@ -8,7 +8,7 @@ namespace Assets
 {
     public class TorpedoTargetable : MonoBehaviour
     {
-        public event Action OnHitByTorpedo;
+        public event Action<Torpedo> OnHitByTorpedo;
 
         public void Start()
         {
@@ -20,10 +20,10 @@ namespace Assets
             SubManager.Instance.Targetable.Remove(this);
         }
 
-        public void HitByTorpedo()
+        public void HitByTorpedo(Torpedo torpedo)
         {
             if (OnHitByTorpedo != null)
-                OnHitByTorpedo();
+                OnHitByTorpedo(torpedo);
         }
     }
 }

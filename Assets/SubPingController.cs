@@ -49,6 +49,9 @@ public class SubPingController : MonoBehaviour
 
         foreach (var taggable in TaggableManager.Instance.AllTaggable)
         {
+            if (taggable == null)
+                continue; // destroyed
+
             if (taggable.gameObject == sub.gameObject)
                 continue;
 

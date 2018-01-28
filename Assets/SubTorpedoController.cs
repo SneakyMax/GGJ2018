@@ -25,6 +25,9 @@ class SubTorpedoController : MonoBehaviour
         if (sub.IsDestroyed)
             return;
 
+        if (!GameplayManager.Instance.AllowInput)
+            return;
+
         if (sub.InputState.Buttons.B == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
         {
             lastFireTime = Time.time;

@@ -32,8 +32,11 @@ public class SubPingController : MonoBehaviour
 	{
 	    if (sub.IsDestroyed)
 	        return;
-    
-	    if (sub.InputState.Buttons.X == ButtonState.Pressed && !isPinging)
+
+        if (!GameplayManager.Instance.AllowInput)
+            return;
+
+        if (sub.InputState.Buttons.X == ButtonState.Pressed && !isPinging)
 	    {
 	        StartPing();
 	    }

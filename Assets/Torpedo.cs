@@ -109,7 +109,7 @@ public class Torpedo : MonoBehaviour
 
             var closest = candidates.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First();
             target = closest;
-            Debug.Log(String.Format("Torpedo targeting {0}", target.gameObject.name));
+            // Debug.Log(String.Format("Torpedo targeting {0}", target.gameObject.name));
         }
         else
         {

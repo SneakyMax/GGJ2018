@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets;
 using UnityEngine;
@@ -46,6 +47,12 @@ public class Sub : MonoBehaviour
 
     public GamePadState InputState { get; private set; }
 
+    public int Kills { get; private set; }
+
+    public RectTransform KillCounter;
+
+    public GameObject KillPrefab;
+
     public void Awake()
     {
         Taggable = GetComponent<Taggable>();
@@ -54,6 +61,24 @@ public class Sub : MonoBehaviour
         Targetable.OnHitByTorpedo += BlowUp;
         Targetable.OnHitByMine += BlowUp;
         Body = GetComponentInChildren<SubBody>();
+
+        GameplayManager.Instance.GameStarted += OnGameStarted;
+    }
+
+    private void OnGameStarted()
+    {
+        Kills = 0;
+        foreach (Transform child in KillCounter)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void GotKill()
+    {
+        Kills++;
+
+        Instantiate(KillPrefab, KillCounter);
     }
 
     private void BlowUp(Mine mine)
@@ -70,12 +95,13 @@ public class Sub : MonoBehaviour
     {
         Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 
-        GetComponentInChildren<SubBody>().gameObject.SetActive(false);
+        GetComponentInChildren<SubBody>(true).gameObject.SetActive(false);
         IsDestroyed = true;
 
         BlownUpText.gameObject.SetActive(true);
         BlownUpText.Format(playerCaused + 1);
-        Lives--;
+
+        SubManager.Instance.GetSub(playerCaused).GotKill();
 
 // explosion of ship is done in the mine or torpedo
 //        SoundManager.PlaySound("explosion_far1");

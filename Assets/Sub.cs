@@ -77,7 +77,9 @@ public class Sub : MonoBehaviour
         BlownUpText.Format(playerCaused + 1);
         Lives--;
 
-        SoundManager.PlaySound("explosion_far1");
+// explosion of ship is done in the mine or torpedo
+//        SoundManager.PlaySound("explosion_far1");
+
         StartCoroutine(Respawn());
     }
 

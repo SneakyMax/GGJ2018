@@ -30,13 +30,15 @@ public class Mine : MonoBehaviour
 	{
 		if (!armed)
 			return;
+
 		var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
 		if (targetable != null)
 			targetable.HitByMine(this);
+
 		Explode();
 	}
 
-	public void Explode()
+	private void Explode()
 	{
 		Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 		Destroy(gameObject);

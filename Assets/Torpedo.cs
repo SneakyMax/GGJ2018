@@ -134,14 +134,23 @@ public class Torpedo : MonoBehaviour
     {
         if (!armed)
             return;
+
         var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
         if (targetable != null)
             targetable.HitByTorpedo(this);
+
         Explode();
     }
 
-    public void Explode()
+    private void Explode()
     {
+        // get closest player to the torpedo or mine
+        //   loop for each player,
+        //   check the distance to the torpedo or mine
+        // attenuate the sound of the explosion: 100% if direct hit to player, fade out to 10% if more than half arena away
+
+        SoundManager.PlaySound("explosion_far1");
+
         Instantiate(ExplosionPrefab, transform.position, transform.rotation);
         Destroy(gameObject);
     }

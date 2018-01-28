@@ -27,7 +27,10 @@ public class SubPingController : MonoBehaviour
 	}
 	
 	void Update ()
-    {
+	{
+	    if (sub.IsDestroyed)
+	        return;
+
 	    if (Input.GetButtonDown("Ping " + sub.Input) && !isPinging)
 	    {
 	        StartPing();

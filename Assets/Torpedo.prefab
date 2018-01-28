@@ -143,8 +143,9 @@ MonoBehaviour:
   InitialSpeed: 0
   Acceleration: 0.1
   MaxSpeed: 5
-  HomingConeHalfAngle: 5
-  HomingTurnRate: 1
+  HomingConeHalfAngle: 10
+  HomingTurnRate: 50
+  MaxLifetime: 10
   target: {fileID: 0}
 --- !u!136 &136624691984965544
 CapsuleCollider:

@@ -65,7 +65,7 @@ Material:
     - _GradientRange: 25
     - _Metallic: 0
     - _MinDistTransitionDist: 10
-    - _MinViewDist: 15
+    - _MinViewDist: 50
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02

@@ -20,6 +20,9 @@ class SubTorpedoController : MonoBehaviour
 
     public void Update()
     {
+        if (sub.IsDestroyed)
+            return;
+
         if (Input.GetButtonDown("Torpedo " + sub.Input) && Time.time - lastFireTime > FireInterval)
         {
             lastFireTime = Time.time;

@@ -66,6 +66,13 @@ public class SubController : MonoBehaviour
 
     public void FixedUpdate()
     {
+        if (sub.IsDestroyed)
+        {
+            body.velocity = new Vector3();
+            body.isKinematic = true;
+            return;
+        }
+
         var forward = transform.forward;
 
         if (AccelState == AccelState.Accellerating)
@@ -177,6 +184,9 @@ public class SubController : MonoBehaviour
 
     public void Update()
     {
+        if (sub.IsDestroyed)
+            return;
+
         var accel = Input.GetAxis("Vertical 2 " + sub.Input);
         if (accel < 0)
         {

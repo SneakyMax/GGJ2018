@@ -21,6 +21,8 @@ public class Torpedo : MonoBehaviour
 
     public float HomingRange = 30;
 
+    public float ArmTime = 1;
+
     public Sub Parent { get; set; }
 
     public GameObject ExplosionPrefab;
@@ -30,6 +32,8 @@ public class Torpedo : MonoBehaviour
     private float speed;
     private Vector3 direction;
     public TorpedoTargetable target;
+    private float spawnTime;
+    private bool armed;
 
     public void Awake()
     {
@@ -40,13 +44,31 @@ public class Torpedo : MonoBehaviour
     {
         speed = InitialSpeed + Parent.GetComponent<Rigidbody>().velocity.magnitude;
         direction = transform.forward;
+
+        foreach (var component in GetComponents<Collider>())
+        {
+            component.enabled = false;
+        }
+
         StartCoroutine(BlowUpAfterTime());
+        StartCoroutine(ArmAfter());
+        spawnTime = Time.time;
     }
 
     private IEnumerator BlowUpAfterTime()
     {
         yield return new WaitForSeconds(MaxLifetime);
         Explode();
+    }
+
+    private IEnumerator ArmAfter()
+    {
+        yield return new WaitForSeconds(ArmTime);
+        foreach (var component in GetComponents<Collider>())
+        {
+            component.enabled = true;
+        }
+        armed = true;
     }
 
     public void Update()
@@ -104,13 +126,14 @@ public class Torpedo : MonoBehaviour
         {
             speed += Acceleration + Time.fixedDeltaTime;
         }
-        
 
         transform.rotation = Quaternion.LookRotation(direction);
     }
 
     public void OnCollisionEnter(Collision collision)
     {
+        if (!armed)
+            return;
         var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
         if (targetable != null)
             targetable.HitByTorpedo(this);

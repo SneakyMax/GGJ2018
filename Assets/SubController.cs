@@ -81,6 +81,7 @@ public class SubController : MonoBehaviour
         {
             body.velocity = new Vector3();
             body.isKinematic = true;
+            SetBubbles(false, false);
             return;
         }
 

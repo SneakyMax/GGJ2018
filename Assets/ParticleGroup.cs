@@ -17,6 +17,11 @@ public class ParticleGroup : MonoBehaviour
         emitting = EmittingAtStart;
     }
 
+    public void OnEnable()
+    {
+        SetEmitting(emitting);
+    }
+
     private bool emitting;
 
     public bool Emitting

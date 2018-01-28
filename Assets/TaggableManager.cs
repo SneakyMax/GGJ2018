@@ -43,7 +43,7 @@ public class TaggableManager : MonoBehaviour
             Remove(existing);
         }
 
-        // Debug.Log(String.Format("Tagging {0} for player {1}", taggable.gameObject.name, player));
+        Debug.Log(String.Format("Tagging {0} for player {1}", taggable.gameObject.name, player));
 
         var info = new TagInfo
         {

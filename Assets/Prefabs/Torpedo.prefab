@@ -315,6 +315,7 @@ MonoBehaviour:
   HomingTurnRate: 50
   MaxLifetime: 15
   HomingRange: 60
+  ArmTime: 1
   ExplosionPrefab: {fileID: 1935378796115610, guid: 5e247ec02bec3bb4da6c33863f81e6c5,
     type: 2}
   target: {fileID: 0}
@@ -493,7 +494,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -3719,7 +3720,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea3324477dff64740b541f3a747c1a42, type: 2}
+  - {fileID: 2100000, guid: ba59968209037c04bafb70610b6e7d88, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0

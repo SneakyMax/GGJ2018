@@ -86,6 +86,7 @@
 				float dist = max(smoothcloselight, smoothpinglight);
 				float4 lighted = lerp(_FogColor, color, dist);
 				float4 fadedIdentified = lerp(float4(0, 0, 0, 0), float4(col_identified.rgb, 1), col_identified.a);
+				//return lerp(lighted, fadedIdentified, 0.5);
 				return lerp(lighted, fadedIdentified, step(rawdepth, identified_depth));
 			}
 			ENDCG

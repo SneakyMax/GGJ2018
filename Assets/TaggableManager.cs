@@ -1,22 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TaggableManager : MonoBehaviour
 {
+    public class TagInfo
+    {
+        public Taggable Taggable;
+        public float StartTime;
+        public float Duration;
+        public int Player;
+        public Coroutine RemoveCoroutine;
+    }
+
     public static TaggableManager Instance { get; private set; }
 
-    public IList<IList<Taggable>> Tagged;
+    public IList<IList<TagInfo>> Tagged;
 
     public IList<Taggable> AllTaggable;
 
     public TaggableManager()
     {
-        Tagged = new List<IList<Taggable>>();
-        Tagged.Add(new List<Taggable>());
-        Tagged.Add(new List<Taggable>());
-        Tagged.Add(new List<Taggable>());
-        Tagged.Add(new List<Taggable>());
+        Tagged = new List<IList<TagInfo>>
+        {new List<TagInfo>(), new List<TagInfo>(), new List<TagInfo>(), new List<TagInfo>()};
 
         AllTaggable = new List<Taggable>();
     }
@@ -26,14 +34,39 @@ public class TaggableManager : MonoBehaviour
         Instance = this;
     }
 
-    public void Tag(Taggable taggable, int player)
+    public void Tag(Taggable taggable, int player, float duration)
     {
-        Tagged[player].Add(taggable);
+        var existing = Tagged[player].FirstOrDefault(x => x.Taggable == taggable);
+        if (existing != null)
+        {
+            Remove(existing);
+        }
+
+        Debug.Log(String.Format("Tagging {0} for player {1}", taggable.gameObject.name, player));
+
+        var info = new TagInfo
+        {
+            Taggable = taggable,
+            Duration = duration,
+            StartTime = Time.time,
+            Player = player
+        };
+        Tagged[player].Add(info);
+
+        info.RemoveCoroutine = StartCoroutine(RemoveAfterDurationCoroutine(info));
     }
 
-    public void Clear(int player)
+    public void Remove(TagInfo tagInfo)
     {
-        Tagged[player].Clear();
+        if (tagInfo.RemoveCoroutine != null)
+            StopCoroutine(tagInfo.RemoveCoroutine);
+        Tagged[tagInfo.Player].Remove(tagInfo);
+    }
+
+    public IEnumerator RemoveAfterDurationCoroutine(TagInfo info)
+    {
+        yield return new WaitForSeconds(info.Duration);
+        Remove(info);
     }
 
     public void Add(Taggable taggable)
@@ -44,5 +77,15 @@ public class TaggableManager : MonoBehaviour
     public void Remove(Taggable taggable)
     {
         AllTaggable.Remove(taggable);
+    }
+
+    public void TagForAllBut(Taggable taggable, int player, float duration)
+    {
+        for (var i = 0; i < Tagged.Count; i++)
+        {
+            if (i == player)
+                continue;
+            Tag(taggable, i, duration);
+        }
     }
 }

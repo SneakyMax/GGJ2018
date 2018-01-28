@@ -20,23 +20,29 @@ public class IdentifiedEffect : MonoBehaviour
 
     public void OnPreCull()
     {
-        foreach (var tagged in TaggableManager.Instance.Tagged[sub.Player])
+        foreach (var info in TaggableManager.Instance.Tagged[sub.Player])
         {
-            tagged.SetLayer(sub.Player);
+            info.Taggable.Prepare(info);
         }
     }
 
     public void OnPostRender()
     {
-        foreach (var tagged in TaggableManager.Instance.Tagged[sub.Player])
+        foreach (var info in TaggableManager.Instance.Tagged[sub.Player])
         {
-            tagged.ResetLayer();
+            info.Taggable.Reset(info);
         }
     }
 
     public void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
-        Graphics.SetRenderTarget(dest);
+        if (DepthOnly == null)
+        {
+            Graphics.Blit(src, dest);
+            return;
+        }
+
+        Graphics.SetRenderTarget(DepthOnlyTexture);
         GL.LoadOrtho();
         DepthOnly.SetTexture("_MainTex", src);
         DepthOnly.SetPass(0);
@@ -55,5 +61,7 @@ public class IdentifiedEffect : MonoBehaviour
         GL.TexCoord2(0, 1);
         GL.Vertex3(0, 1, 0.1f);
         GL.End();
+
+        Graphics.Blit(src, dest);
     }
 }

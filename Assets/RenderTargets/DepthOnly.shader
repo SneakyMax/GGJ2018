@@ -38,11 +38,11 @@
 			}
 			
 			sampler2D _MainTex;
-			sampler2D _CameraDepthTexture;
+			sampler2D _LastCameraDepthTexture;
 
 			float frag (v2f i) : SV_Target
 			{
-				return tex2D(_CameraDepthTexture, i.uv);
+				return tex2D(_LastCameraDepthTexture, i.uv);
 			}
 			ENDCG
 		}

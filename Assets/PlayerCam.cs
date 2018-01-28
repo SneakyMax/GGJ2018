@@ -12,8 +12,6 @@ public class PlayerCam : MonoBehaviour
 
     public float PingDist { get; set; }
 
-    public float IdentifiedOpacity { get; set; }
-
     public float IdentifiedMaxOpacity = 1;
 
     public Material thisMaterial;
@@ -50,7 +48,6 @@ public class PlayerCam : MonoBehaviour
         thisMaterial.SetFloat("_CurrentPingDist", PingDist);
         thisMaterial.SetTexture("_IdentifiedTex", IdentifiedTexture);
         thisMaterial.SetTexture("_IdentifiedDepth", IdentifiedDepthTexture);
-        thisMaterial.SetFloat("_IdentifiedOpacity", IdentifiedOpacity * IdentifiedMaxOpacity);
         thisMaterial.SetPass(0);
 
         GL.Begin(GL.QUADS);

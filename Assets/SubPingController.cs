@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SubPingController : MonoBehaviour
@@ -15,80 +16,80 @@ public class SubPingController : MonoBehaviour
     private bool isPinging;
     private float currentPingDist = -5000;
     private float pingStartTime;
-    private Coroutine fadeOutIdentifiedCoroutine;
+    private IList<Taggable> hasTagged;
 
     private Sub sub;
 
 	void Start ()
 	{
 	    sub = GetComponentInParent<Sub>();
+	    hasTagged = new List<Taggable>();
 	}
 	
 	void Update ()
     {
-	    if (Input.GetButton("Ping " + sub.Input) && !isPinging)
+	    if (Input.GetButtonDown("Ping " + sub.Input) && !isPinging)
 	    {
-	        isPinging = true;
-	        pingStartTime = Time.time;
-	        currentPingDist = 0;
-	        sub.Cam.IsPinging = true;
-	        sub.Cam.IdentifiedOpacity = 1;
-	        if (fadeOutIdentifiedCoroutine != null)
-	            StopCoroutine(fadeOutIdentifiedCoroutine);
-	        TaggableManager.Instance.Clear(sub.Player);
+	        StartPing();
 	    }
         else if (isPinging)
         {
-            currentPingDist = ((Time.time - pingStartTime) / PingTime) * PingRange;
-
-            foreach (var taggable in TaggableManager.Instance.AllTaggable)
-            {
-                if (taggable.gameObject == sub.gameObject)
-                    continue;
-
-                // Pings originate from camera because I'm lazy
-                var camPosition = sub.Cam.gameObject.transform.position;
-                if (Vector3.Distance(camPosition, taggable.gameObject.transform.position) < currentPingDist)
-                {
-                    // If it's just in range, cast a ray to see if we can see it
-                    RaycastHit hit;
-                    Physics.Raycast(new Ray(camPosition, taggable.gameObject.transform.position - camPosition), out hit);
-
-                    if (hit.rigidbody == taggable.Rigidbody)
-                    {
-                        TaggableManager.Instance.Tag(taggable, sub.Player);
-                    }
-                }
-            }
-
-            if (Time.time - pingStartTime > PingTime)
-            {
-                isPinging = false;
-                pingStartTime = 0;
-                sub.Cam.IsPinging = false;
-                currentPingDist = -5000;
-
-                FadeOutIdentified();
-            }
+            UpdatePing();
         }
 
         sub.Cam.PingDist = currentPingDist;
     }
 
-    private void FadeOutIdentified()
+    private void UpdatePing()
     {
-        fadeOutIdentifiedCoroutine = StartCoroutine(FadeOutIdentified_Coroutine());
+        currentPingDist = ((Time.time - pingStartTime) / PingTime) * PingRange;
+
+        foreach (var taggable in TaggableManager.Instance.AllTaggable)
+        {
+            if (taggable.gameObject == sub.gameObject)
+                continue;
+
+            // Pings originate from camera because I'm lazy
+            var camPosition = sub.Cam.gameObject.transform.position;
+            if (Vector3.Distance(camPosition, taggable.gameObject.transform.position) < currentPingDist)
+            {
+                // If it's just in range, cast a ray to see if we can see it
+                RaycastHit hit;
+                Physics.Raycast(new Ray(camPosition, taggable.gameObject.transform.position - camPosition), out hit);
+
+                if (hit.rigidbody == taggable.Rigidbody)
+                {
+                    if (hasTagged.Contains(taggable) == false)
+                    {
+                        TaggableManager.Instance.Tag(taggable, sub.Player, IdentifiedTime);
+                        hasTagged.Add(taggable);
+                    }
+                }
+            }
+        }
+
+        if (Time.time - pingStartTime > PingTime)
+        {
+            PingEnded();
+        }
     }
 
-    private IEnumerator FadeOutIdentified_Coroutine()
+    private void PingEnded()
     {
-        var startTime = Time.time;
-        while (Time.time - startTime < IdentifiedTime)
-        {
-            var opacity = 1.0f - (Time.time - startTime) / IdentifiedTime;
-            sub.Cam.IdentifiedOpacity = opacity;
-            yield return new WaitForEndOfFrame();
-        }
-        TaggableManager.Instance.Clear(sub.Player);
+        isPinging = false;
+        pingStartTime = 0;
+        sub.Cam.IsPinging = false;
+        currentPingDist = -5000;
+        hasTagged.Clear();
+    }
+
+    private void StartPing()
+    {
+        isPinging = true;
+        pingStartTime = Time.time;
+        currentPingDist = 0;
+        sub.Cam.IsPinging = true;
+
+        TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, IdentifiedTime);
     }
 }

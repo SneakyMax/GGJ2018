@@ -21,6 +21,13 @@ public class Sub : MonoBehaviour
         get { return transform; }
     }
 
+    public void Awake()
+    {
+        Taggable = GetComponent<Taggable>();
+    }
+
+    public Taggable Taggable { get; private set; }
+
     public void Start()
     {
         SubManager.Instance.Subs.Add(this);

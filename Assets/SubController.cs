@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets;
 using UnityEngine;
 using XInputDotNetPure; // Required in C#
 
@@ -208,6 +209,9 @@ public class SubController : MonoBehaviour
     public void Update()
     {
         if (sub.IsDestroyed)
+            return;
+
+        if (!GameplayManager.Instance.AllowInput)
             return;
 
         var state = sub.InputState;

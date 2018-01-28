@@ -26,7 +26,10 @@ class SubMineController : MonoBehaviour
 		if (sub.IsDestroyed)
 			return;
 
-		if (sub.InputState.Buttons.Y == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
+        if (!GameplayManager.Instance.AllowInput)
+            return;
+
+        if (sub.InputState.Buttons.Y == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
 		{
 			lastFireTime = Time.time;
 			FireMine();

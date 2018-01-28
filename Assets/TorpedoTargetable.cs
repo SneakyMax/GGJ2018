@@ -9,6 +9,7 @@ namespace Assets
     public class TorpedoTargetable : MonoBehaviour
     {
         public event Action<Torpedo> OnHitByTorpedo;
+        public event Action<Mine> OnHitByMine;
 
         public void Start()
         {
@@ -24,6 +25,12 @@ namespace Assets
         {
             if (OnHitByTorpedo != null)
                 OnHitByTorpedo(torpedo);
+        }
+
+        public void HitByMine(Mine mine)
+        {
+            if (OnHitByMine != null)
+                OnHitByMine(mine);
         }
     }
 }

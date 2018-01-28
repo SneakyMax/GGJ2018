@@ -32,7 +32,7 @@ public class Mine : MonoBehaviour
 			return;
 		var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
 		if (targetable != null)
-			targetable.HitByTorpedo(this);
+			targetable.HitByMine(this);
 		Explode();
 	}
 

@@ -52,7 +52,13 @@ public class Sub : MonoBehaviour
         Targetable = GetComponent<TorpedoTargetable>();
 
         Targetable.OnHitByTorpedo += BlowUp;
+        Targetable.OnHitByMine += BlowUp;
         Body = GetComponentInChildren<SubBody>();
+    }
+
+    private void BlowUp(Mine mine)
+    {
+        BlowUp(mine.Parent.Player);
     }
 
     private void BlowUp(Torpedo torpedo)

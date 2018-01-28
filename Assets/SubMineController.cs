@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets;
+using UnityEngine;
 using XInputDotNetPure;
+
 
 class SubMineController : MonoBehaviour
 {
@@ -37,6 +39,8 @@ class SubMineController : MonoBehaviour
 		var mine = newMineObj.GetComponent<Mine>();
 		mine.Parent = sub;
 
-		TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
+        SoundManager.PlaySound("Deploy_or drop item");
+
+        TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
 	}
 }

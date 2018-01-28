@@ -40,5 +40,8 @@ public class Mine : MonoBehaviour
 	{
 		Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 		Destroy(gameObject);
-	}
+
+        SoundManager.PlaySound("explosion_medium - far");
+
+    }
 }

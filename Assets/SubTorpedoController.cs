@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets;
+using UnityEngine;
 using XInputDotNetPure;
 
 class SubTorpedoController : MonoBehaviour
@@ -36,6 +37,8 @@ class SubTorpedoController : MonoBehaviour
         var newTorpedoObj = Instantiate(TorpedoPrefab, torpedoPoint.position, torpedoPoint.rotation);
         var torpedo = newTorpedoObj.GetComponent<Torpedo>();
         torpedo.Parent = sub;
+
+        SoundManager.PlaySound("TorpedoFire_2,5sec");
 
         TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
     }

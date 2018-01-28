@@ -23,18 +23,18 @@ namespace Assets
             }
         }
 
-        public static void PlaySound(string sound)
+        public static void PlaySound(string sound, float volume = 1.0f)
         {
-            Instance.PlaySoundInternal(sound);
+            Instance.PlaySoundInternal(sound, volume);
         }
 
-        private void PlaySoundInternal(string soundName)
+        private void PlaySoundInternal(string soundName, float volume)
         {
             AudioSource sound;
             var found = sounds.TryGetValue(soundName, out sound);
             if (found)
             {
-                sound.Play();
+                sound.PlayOneShot(sound.clip, volume);
             }
         }
     }

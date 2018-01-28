@@ -102,6 +102,8 @@ public class SubPingController : MonoBehaviour
         TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, IdentifiedTime);
         sub.PingReadyIcon.enabled = false;
 
+        SoundManager.PlaySound("Sonar", (float)0.8);
+
         sub.Body.Flash();
     }
 }

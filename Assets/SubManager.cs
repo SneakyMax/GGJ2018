@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets;
 using UnityEngine;
 
@@ -19,5 +20,10 @@ public class SubManager : MonoBehaviour
     public void Awake()
     {
         Instance = this;
+    }
+
+    public Sub GetSub(int player)
+    {
+        return Subs.FirstOrDefault(x => x.Player == player);
     }
 }

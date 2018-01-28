@@ -23,6 +23,8 @@ public class Torpedo : MonoBehaviour
 
     public Sub Parent { get; set; }
 
+    public GameObject ExplosionPrefab;
+
     private Rigidbody body;
 
     private float speed;
@@ -117,7 +119,7 @@ public class Torpedo : MonoBehaviour
 
     public void Explode()
     {
-        // TODO particles
+        Instantiate(ExplosionPrefab, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }

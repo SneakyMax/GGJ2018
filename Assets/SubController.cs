@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using XInputDotNetPure; // Required in C#
 
 public class SubController : MonoBehaviour
 {
-
-    public ParticleSystem Bubble;
+    public ParticleGroup Bubbles;
+    public ParticleGroup BackwardBubbles;
 
     public RaiseState RaiseState;
 
@@ -23,8 +24,11 @@ public class SubController : MonoBehaviour
 
     public float StrafeFactor;
 
+    public float AccelFactor;
+
+    public float PitchFactor;
+
     /// <summary>Max pitch in degrees away from center</summary>
-    public float MaxPitch;
 
     [Header("Movement Limits")]
     public float MaxRaiseLowerSpeed;
@@ -34,6 +38,8 @@ public class SubController : MonoBehaviour
     public float MaxSpeed;
 
     public float MaxStrafe;
+
+    public float MaxPitch;
 
     [Header("Rates")]
     public float AccelerationRate;
@@ -52,16 +58,21 @@ public class SubController : MonoBehaviour
     private Sub sub;
     private GameObject modelObject;
 
+    public void SetBubbles(bool? forward, bool? backward)
+    {
+        if (Bubbles != null && forward != null)
+            Bubbles.Emitting = forward.Value;
+
+        if (BackwardBubbles != null && backward != null)
+            BackwardBubbles.Emitting = backward.Value;
+    }
+
     public void Awake()
     {
         body = GetComponent<Rigidbody>();
         sub = GetComponent<Sub>();
         modelObject = GetComponentInChildren<SubBody>().gameObject;
-        if (Bubble.isPlaying)
-        {
-            Debug.Log("Bubble.Stop()");
-            Bubble.Stop();
-        }
+        SetBubbles(false, false);
     }
 
     public void FixedUpdate()
@@ -76,58 +87,55 @@ public class SubController : MonoBehaviour
         if (body.isKinematic)
             body.isKinematic = false;
 
+
         var forward = transform.forward;
+
+        var totalForce = new Vector3();
 
         if (AccelState == AccelState.Accellerating)
         {
             var facingVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), forward) * body.velocity;
-            if (facingVelocity.sqrMagnitude < MaxSpeed * MaxSpeed)
+            if (facingVelocity.magnitude < MaxSpeed)
             {
-                body.AddForce(forward * AccelerationRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+                totalForce += AccelFactor * forward * AccelerationRate * Time.fixedDeltaTime;
             }
 
-            if (Bubble.isStopped)
-            {
-                Debug.Log("Bubble.Play()");
-                Bubble.Play();
-            }
+            SetBubbles(true, false);
         }
         else if (AccelState == AccelState.Reversing)
         {
             var facingVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), -forward) * body.velocity;
-            if (facingVelocity.sqrMagnitude < MaxSpeed * MaxSpeed)
+            if (facingVelocity.magnitude < MaxSpeed)
             {
-                body.AddForce(-forward * AccelerationRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+                totalForce += AccelFactor * -forward * AccelerationRate * Time.fixedDeltaTime;
             }
 
-            if (Bubble.isStopped)
-            {
-                Debug.Log("Bubble.Play()");
-                Bubble.Play();
-            }
+            SetBubbles(false, true);
         }
         if (AccelState == AccelState.Stopping)
         {
-            if (Bubble.isPlaying)
-            {
-                Debug.Log("Bubble.Stop()");
-                Bubble.Stop();
-            }
+            SetBubbles(false, false);
         }
 
         if (TurnState == TurnState.TurnLeft)
         {
-            if (body.angularVelocity.sqrMagnitude < MaxTurnRate * MaxTurnRate)
+            if (body.angularVelocity.y > -MaxTurnRate)
             {
-                body.AddTorque(TurnFactor * -Vector3.up * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
+                var backFactor = Mathf.Sign(body.angularVelocity.y) > 0 ? 4 : 1; 
+                body.AddTorque(backFactor * TurnFactor * -Vector3.up * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
             } 
         }
         else if (TurnState == TurnState.TurnRight)
         {
-            if (body.angularVelocity.sqrMagnitude < MaxTurnRate * MaxTurnRate)
+            if (body.angularVelocity.y < MaxTurnRate)
             {
-                body.AddTorque(TurnFactor * Vector3.up * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
+                var backFactor = Mathf.Sign(body.angularVelocity.y) < 0 ? 4 : 1;
+                body.AddTorque(backFactor * TurnFactor * Vector3.up * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
+        }
+        else if ( body.angularVelocity.y > MaxTurnRate / 4.0f)
+        {
+            body.AddTorque(Vector3.up * -Mathf.Sign(body.angularVelocity.y) * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
         }
 
         var pitch = modelObject.transform.localRotation.eulerAngles.x;
@@ -136,34 +144,33 @@ public class SubController : MonoBehaviour
 
         if (RaiseState == RaiseState.Raising)
         {
-            if (Mathf.Abs(body.velocity.z) < MaxRaiseLowerSpeed)
+            if (Mathf.Abs(body.velocity.y) < MaxRaiseLowerSpeed)
             {
-                body.AddForce(RaiseFactor * Vector3.up * FloatSinkRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+                totalForce += Vector3.up * FloatSinkRate * Time.fixedDeltaTime;
             }
-
             
             if (pitch > -MaxPitch)
             {
-                modelObject.transform.localRotation = Quaternion.Euler(pitch - (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
+                //modelObject.transform.localRotation = Quaternion.Euler(pitch - (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
             }
         }
         else if (RaiseState == RaiseState.Lowering)
         {
-            if (Mathf.Abs(body.velocity.z) < MaxRaiseLowerSpeed)
+            if (Mathf.Abs(body.velocity.y) < MaxRaiseLowerSpeed)
             {
-                body.AddForce(RaiseFactor * Vector3.down * FloatSinkRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+                totalForce += Vector3.down * FloatSinkRate * Time.fixedDeltaTime;
             }
             
             if (pitch < MaxPitch)
             {
-                modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
+                //modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
             }
         }
         else if (RaiseState == RaiseState.Centering)
         {
             if (Mathf.Abs(pitch) > 1)
             {
-                modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * -Math.Sign(pitch)), 0, 0);
+                // modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * -Math.Sign(pitch)), 0, 0);
             }
         }
 
@@ -172,7 +179,7 @@ public class SubController : MonoBehaviour
             var leftVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), -transform.right) * body.velocity;
             if (leftVelocity.sqrMagnitude < MaxStrafe * MaxStrafe)
             {
-                body.AddForce(-transform.right * StrafeFactor * StrafeRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+                totalForce += -transform.right * StrafeFactor * StrafeRate * Time.fixedDeltaTime;
             }
         }
         else if (StrafeState == StrafeState.Right)
@@ -180,9 +187,21 @@ public class SubController : MonoBehaviour
             var rightVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), -transform.right) * body.velocity;
             if (rightVelocity.sqrMagnitude < MaxStrafe * MaxStrafe)
             {
-                body.AddForce(transform.right * StrafeFactor * StrafeRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+                totalForce += transform.right * StrafeFactor * StrafeRate * Time.fixedDeltaTime;
             }
         }
+
+        if (PitchFactor > 0.05 || PitchFactor < -0.05)
+        {
+            body.AddRelativeTorque(PitchFactor * PitchRate * Time.fixedDeltaTime, 0, 0, ForceMode.Acceleration);
+        }
+
+        if(totalForce.sqrMagnitude > 0)
+        {
+            body.AddForce(totalForce, ForceMode.Acceleration);
+        }
+
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
     }
 
     public void Update()
@@ -190,27 +209,32 @@ public class SubController : MonoBehaviour
         if (sub.IsDestroyed)
             return;
 
-        var accel = Input.GetAxis("Vertical " + sub.Input);
-        if (accel < 0)
+        var state = sub.InputState;
+
+        var accel = state.ThumbSticks.Left.Y;
+
+        if (accel > 0.1f)
         {
             AccelState = AccelState.Accellerating;
+            AccelFactor = Mathf.Abs(accel);
         }
-        else if (accel > 0)
+        else if (accel < -0.1f)
         {
             AccelState = AccelState.Reversing;
+            AccelFactor = Mathf.Abs(accel);
         }
         else
         {
             AccelState = AccelState.Stopping;
         }
 
-        var horizontal = Input.GetAxis("Horizontal " + sub.Input);
-        if (horizontal < 0)
+        var horizontal = state.ThumbSticks.Right.X;
+        if (horizontal < -0.1f)
         {
             TurnState = TurnState.TurnLeft;
             TurnFactor = Mathf.Abs(horizontal);
         }
-        else if (horizontal > 0)
+        else if (horizontal > 0.1f)
         {
             TurnState = TurnState.TurnRight;
             TurnFactor = horizontal;
@@ -219,30 +243,29 @@ public class SubController : MonoBehaviour
         {
             TurnState = TurnState.Centering;
         }
-
-        var vertical = Input.GetAxis("Vertical 2 " + sub.Input);
-        if (vertical > 0)
+        
+        if (state.Triggers.Right > 0.5f)
         {
             RaiseState = RaiseState.Raising;
-            RaiseFactor = vertical;
         }
-        else if (vertical < 0)
+        else if (state.Triggers.Left > 0.5f)
         {
             RaiseState = RaiseState.Lowering;
-            RaiseFactor = Mathf.Abs(vertical);
         }
         else
         {
             RaiseState = RaiseState.Centering;
         }
 
-        var strafe = Input.GetAxis("Horizontal 2 " + sub.Input);
-        if (strafe < 0)
+        PitchFactor = state.ThumbSticks.Right.Y;
+
+        var strafe = state.ThumbSticks.Left.X;
+        if (strafe < -0.1f)
         {
             StrafeState = StrafeState.Left;
             StrafeFactor = Mathf.Abs(strafe);
         }
-        else if (strafe > 0)
+        else if (strafe > 0.1f)
         {
             StrafeState = StrafeState.Right;
             StrafeFactor = strafe;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Assets;
 using UnityEngine;
+using UnityEngine.UI;
+using XInputDotNetPure;
 
 public class Sub : MonoBehaviour
 {
@@ -28,9 +30,21 @@ public class Sub : MonoBehaviour
 
     public GameObject SpawnPoint;
 
+    public GameObject ExplosionPrefab;
+
     public int Lives;
 
     public float RespawnDelay = 3;
+
+    public TorpedoTargetable Targetable { get; set; }
+
+    public Taggable Taggable { get; private set; }
+
+    public SubBody Body { get; private set; }
+
+    public Image PingReadyIcon;
+
+    public GamePadState InputState { get; private set; }
 
     public void Awake()
     {
@@ -38,6 +52,7 @@ public class Sub : MonoBehaviour
         Targetable = GetComponent<TorpedoTargetable>();
 
         Targetable.OnHitByTorpedo += BlowUp;
+        Body = GetComponentInChildren<SubBody>();
     }
 
     private void BlowUp(Torpedo torpedo)
@@ -47,6 +62,8 @@ public class Sub : MonoBehaviour
 
     private void BlowUp(int playerCaused)
     {
+        Instantiate(ExplosionPrefab, transform.position, transform.rotation);
+
         GetComponentInChildren<SubBody>().gameObject.SetActive(false);
         IsDestroyed = true;
 
@@ -67,10 +84,6 @@ public class Sub : MonoBehaviour
         BlownUpText.gameObject.SetActive(false);
     }
 
-    public TorpedoTargetable Targetable { get; set; }
-
-    public Taggable Taggable { get; private set; }
-
     public void Start()
     {
         SubManager.Instance.Subs.Add(this);
@@ -78,6 +91,11 @@ public class Sub : MonoBehaviour
 
         transform.position = SpawnPoint.transform.position;
         transform.rotation = SpawnPoint.transform.rotation;
+    }
+
+    public void Update()
+    {
+        InputState = GamePad.GetState((PlayerIndex)Player);
     }
 
     public void OnDestroy()

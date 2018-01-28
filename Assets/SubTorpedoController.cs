@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using XInputDotNetPure;
 
 class SubTorpedoController : MonoBehaviour
 {
@@ -23,7 +24,7 @@ class SubTorpedoController : MonoBehaviour
         if (sub.IsDestroyed)
             return;
 
-        if (Input.GetButtonDown("Torpedo " + sub.Input) && Time.time - lastFireTime > FireInterval)
+        if (sub.InputState.Buttons.B == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
         {
             lastFireTime = Time.time;
             FireTorpedo();

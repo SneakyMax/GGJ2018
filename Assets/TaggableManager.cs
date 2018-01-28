@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets;
 using UnityEngine;
 
 public class TaggableManager : MonoBehaviour
@@ -54,6 +55,8 @@ public class TaggableManager : MonoBehaviour
         Tagged[player].Add(info);
 
         info.RemoveCoroutine = StartCoroutine(RemoveAfterDurationCoroutine(info));
+
+        Helpers.Instance.ShowPing(SubManager.Instance.GetSub(player), taggable.transform.position);
     }
 
     public void Remove(TagInfo tagInfo)
@@ -77,6 +80,13 @@ public class TaggableManager : MonoBehaviour
     public void Remove(Taggable taggable)
     {
         AllTaggable.Remove(taggable);
+
+        var toRemove = Tagged.SelectMany(x => x.Where(y => y.Taggable == taggable)).ToList();
+
+        foreach (var info in toRemove)
+        {
+            Remove(info);
+        }
     }
 
     public void TagForAllBut(Taggable taggable, int player, float duration)

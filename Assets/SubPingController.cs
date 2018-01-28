@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class SubPingController : MonoBehaviour
 {
@@ -30,8 +32,8 @@ public class SubPingController : MonoBehaviour
 	{
 	    if (sub.IsDestroyed)
 	        return;
-
-	    if (Input.GetButtonDown("Ping " + sub.Input) && !isPinging)
+    
+	    if (sub.InputState.Buttons.X == ButtonState.Pressed && !isPinging)
 	    {
 	        StartPing();
 	    }
@@ -87,6 +89,7 @@ public class SubPingController : MonoBehaviour
         sub.Cam.IsPinging = false;
         currentPingDist = -5000;
         hasTagged.Clear();
+        sub.PingReadyIcon.enabled = true;
     }
 
     private void StartPing()
@@ -97,5 +100,8 @@ public class SubPingController : MonoBehaviour
         sub.Cam.IsPinging = true;
 
         TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, IdentifiedTime);
+        sub.PingReadyIcon.enabled = false;
+
+        sub.Body.Flash();
     }
 }

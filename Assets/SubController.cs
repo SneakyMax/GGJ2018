@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class SubController : MonoBehaviour
 {
+
+    public ParticleSystem Bubble;
+
     public RaiseState RaiseState;
 
     public TurnState TurnState;
@@ -54,6 +57,11 @@ public class SubController : MonoBehaviour
         body = GetComponent<Rigidbody>();
         sub = GetComponent<Sub>();
         modelObject = GetComponentInChildren<SubBody>().gameObject;
+        if (Bubble.isPlaying)
+        {
+            Debug.Log("Bubble.Stop()");
+            Bubble.Stop();
+        }
     }
 
     public void FixedUpdate()
@@ -67,6 +75,12 @@ public class SubController : MonoBehaviour
             {
                 body.AddForce(forward * AccelerationRate * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
+
+            if (Bubble.isStopped)
+            {
+                Debug.Log("Bubble.Play()");
+                Bubble.Play();
+            }
         }
         else if (AccelState == AccelState.Reversing)
         {
@@ -74,6 +88,20 @@ public class SubController : MonoBehaviour
             if (facingVelocity.sqrMagnitude < MaxSpeed * MaxSpeed)
             {
                 body.AddForce(-forward * AccelerationRate * Time.fixedDeltaTime, ForceMode.Acceleration);
+            }
+
+            if (Bubble.isStopped)
+            {
+                Debug.Log("Bubble.Play()");
+                Bubble.Play();
+            }
+        }
+        if (AccelState == AccelState.Stopping)
+        {
+            if (Bubble.isPlaying)
+            {
+                Debug.Log("Bubble.Stop()");
+                Bubble.Stop();
             }
         }
 

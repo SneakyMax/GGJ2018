@@ -17,6 +17,10 @@ namespace Assets
 
         public void ShowPing(Sub player, Vector3 worldSpacePoint)
         {
+            var direction = worldSpacePoint - player.transform.position;
+            if (Vector3.Dot(direction, player.transform.forward) < 0)
+                return; // Behind you
+
             var screenSpace = WorldPointToScreenSpace(worldSpacePoint, player.Cam.GetComponent<Camera>());
             if (screenSpace.x < 0 || screenSpace.y < 0 || screenSpace.x > 1 || screenSpace.y > 1)
                 return; //outside screen

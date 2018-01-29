@@ -53,6 +53,12 @@ public class Sub : MonoBehaviour
 
     public GameObject KillPrefab;
 
+    public float AimDistance = 30;
+
+    public RectTransform AimReticule;
+
+    public Camera SubCamera { get; private set; }
+
     public void Awake()
     {
         Taggable = GetComponent<Taggable>();
@@ -62,7 +68,7 @@ public class Sub : MonoBehaviour
         Targetable.OnHitByMine += BlowUp;
         Body = GetComponentInChildren<SubBody>();
 
-        GameplayManager.Instance.GameStarted += OnGameStarted;
+        SubCamera = Cam.GetComponent<Camera>();
     }
 
     private void OnGameStarted()
@@ -93,6 +99,9 @@ public class Sub : MonoBehaviour
 
     private void BlowUp(int playerCaused)
     {
+        if (IsDestroyed)
+            return;
+
         Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 
         GetComponentInChildren<SubBody>(true).gameObject.SetActive(false);
@@ -119,6 +128,7 @@ public class Sub : MonoBehaviour
 
     public void Start()
     {
+        GameplayManager.Instance.GameStarted += OnGameStarted;
         SubManager.Instance.Subs.Add(this);
         BlownUpText.gameObject.SetActive(false);
 
@@ -129,6 +139,9 @@ public class Sub : MonoBehaviour
     public void Update()
     {
         InputState = GamePad.GetState((PlayerIndex)Player);
+
+        AimReticule.anchoredPosition = Helpers.Instance.CameraSpaceToMultiplyerSpace(
+            Helpers.Instance.WorldPointToScreenSpace(transform.position + (transform.forward * AimDistance), SubCamera));
     }
 
     public void OnDestroy()

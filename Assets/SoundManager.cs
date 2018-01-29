@@ -19,7 +19,7 @@ namespace Assets
             sounds = new Dictionary<string, AudioSource>();
             foreach (var source in GetComponentsInChildren<AudioSource>())
             {
-                sounds.Add(source.clip.name, source);
+                sounds[source.clip.name] = source;
             }
         }
 

@@ -110,7 +110,8 @@ public class Sub : MonoBehaviour
         BlownUpText.gameObject.SetActive(true);
         BlownUpText.Format(playerCaused + 1);
 
-        SubManager.Instance.GetSub(playerCaused).GotKill();
+        if (playerCaused != Player)
+            SubManager.Instance.GetSub(playerCaused).GotKill();
 
 // explosion of ship is done in the mine or torpedo
 //        SoundManager.PlaySound("explosion_far1");
@@ -149,5 +150,19 @@ public class Sub : MonoBehaviour
     public void OnDestroy()
     {
         SubManager.Instance.Subs.Remove(this);
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        var otherSub = collision.gameObject.GetComponentInParent<Sub>();
+        if (otherSub != null)
+        {
+            BlowUp(otherSub.Player);
+        }
+
+        if (collision.gameObject.CompareTag("Ceiling"))
+        {
+            GetComponent<SubController>().HitCeiling();
+        }
     }
 }

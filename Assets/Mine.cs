@@ -14,6 +14,16 @@ public class Mine : MonoBehaviour
 	public GameObject ExplosionPrefab;
 
 	private bool armed;
+    private Rigidbody body;
+
+    public float SeekAccel;
+
+    public float MaxSpeed;
+
+    public void Awake()
+    {
+        body = GetComponent<Rigidbody>();
+    }
 
 	public void Start()
 	{
@@ -44,6 +54,23 @@ public class Mine : MonoBehaviour
 		Destroy(gameObject);
 
         SoundManager.PlaySound("explosion_medium - far");
+    }
 
+    public void FixedUpdate()
+    {
+        if (armed == false)
+            return;
+
+        var closestPlayer =
+            SubManager.Instance.Subs.OrderBy(x => Vector3.Distance(transform.position, x.transform.position))
+                .FirstOrDefault();
+
+        if (closestPlayer == null)
+            return;
+
+        var toClosestPlayer = (closestPlayer.transform.position - transform.position).normalized;
+
+        if ( body.velocity.magnitude < MaxSpeed)
+            body.AddForce(toClosestPlayer * SeekAccel, ForceMode.Acceleration);
     }
 }

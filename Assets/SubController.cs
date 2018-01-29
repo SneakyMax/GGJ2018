@@ -55,6 +55,10 @@ public class SubController : MonoBehaviour
 
     public float StrafeRate;
 
+    public float CeilingForce = 100;
+
+    public float CeilingCorrect = 10;
+
     private Rigidbody body;
     private Sub sub;
     private GameObject modelObject;
@@ -280,7 +284,12 @@ public class SubController : MonoBehaviour
             StrafeState = StrafeState.Centering;
         }
     }
-   
+
+    public void HitCeiling()
+    {
+        body.AddForce(Vector3.down * CeilingForce, ForceMode.VelocityChange);
+        body.AddRelativeTorque(Vector3.right * CeilingCorrect, ForceMode.VelocityChange );
+    }
 }
 
 [Serializable]

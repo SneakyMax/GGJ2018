@@ -83,6 +83,11 @@ namespace Assets
                     GameEnded();
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
 
         private void GameEnded()

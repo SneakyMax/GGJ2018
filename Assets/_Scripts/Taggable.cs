@@ -17,6 +17,7 @@ namespace Depth
         };
 
         private IList<TaggableRenderer> subRenderers;
+        private int lastLayer;
 
         private void Awake()
         {
@@ -51,15 +52,20 @@ namespace Depth
             var layer = Layers[player];
             foreach (var renderable in GetComponentsInChildren<MeshFilter>())
             {
-                renderable.gameObject.layer = layer;
+                if (renderable.gameObject.layer == 0)
+                {
+                    renderable.gameObject.layer = layer;
+                }
             }
+            lastLayer = layer;
         }
 
         private void ResetLayer()
         {
             foreach (var renderable in GetComponentsInChildren<MeshFilter>())
             {
-                renderable.gameObject.layer = 0;
+                if ( renderable.gameObject.layer == lastLayer )
+                    renderable.gameObject.layer = 0;
             }
         }
 

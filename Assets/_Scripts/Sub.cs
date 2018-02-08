@@ -14,6 +14,7 @@ namespace Depth
         public GamePadState InputState { get; private set; }
         public int Kills { get; private set; }
         public Camera SubCamera { get; private set; }
+        public SubParameters Parameters { get; private set; }
 
         public PlayerCam Cam;
 
@@ -37,6 +38,7 @@ namespace Depth
             Targetable.OnHitByTorpedo += BlowUp;
             Targetable.OnHitByMine += BlowUp;
             Body = GetComponentInChildren<SubBody>();
+            Parameters = GetComponentInChildren<SubParameters>();
 
             SubCamera = Cam.GetComponent<Camera>();
         }

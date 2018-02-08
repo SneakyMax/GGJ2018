@@ -43,6 +43,9 @@ namespace Depth
             identifiedDepthTexture = identifiedEffect.DepthTexture;
 
             RenderController.Instance.SetPlayerCam(sub.Player, targetTexture);
+
+            var targetPosition = sub.gameObject.GetComponentInChildren<CamTargetPosition>().transform;
+            transform.SetPositionAndRotation(targetPosition.position, targetPosition.rotation);
         }
 
         // From online

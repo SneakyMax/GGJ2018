@@ -5,9 +5,6 @@ namespace Depth
 {
     public class SubController : MonoBehaviour
     {
-        public ParticleGroup Bubbles;
-        public ParticleGroup BackwardBubbles;
-
         public RaiseState RaiseState;
         public TurnState TurnState;
         public AccelState AccelState;
@@ -21,38 +18,23 @@ namespace Depth
 
         /// <summary>Max pitch in degrees away from center</summary>
 
-        [Header("Movement Limits")]
-        public float MaxRaiseLowerSpeed;
-        public float MaxTurnRate;
-        public float MaxSpeed;
-        public float MaxStrafe;
-        public float MaxPitch;
-
-        [Header("Rates")]
-        public float AccelerationRate;
-        public float BrakeRate;
-        public float TurnAcceleration;
-        public float FloatSinkRate;
-        public float PitchRate;
-        public float StrafeRate;
-        public float CeilingForce = 100;
-        public float CeilingCorrect = 10;
-
+        private SubParameters parameters;
         private Rigidbody body;
         private Sub sub;
         private GameObject modelObject;
 
         private void SetBubbles(bool? forward, bool? backward)
         {
-            if (Bubbles != null && forward != null)
-                Bubbles.Emitting = forward.Value;
+            if (parameters.Bubbles != null && forward != null)
+                parameters.Bubbles.Emitting = forward.Value;
 
-            if (BackwardBubbles != null && backward != null)
-                BackwardBubbles.Emitting = backward.Value;
+            if (parameters.BackwardBubbles != null && backward != null)
+                parameters.BackwardBubbles.Emitting = backward.Value;
         }
 
         public void Awake()
         {
+            parameters = GetComponentInChildren<SubParameters>();
             body = GetComponent<Rigidbody>();
             sub = GetComponent<Sub>();
             modelObject = GetComponentInChildren<SubBody>().gameObject;
@@ -80,9 +62,9 @@ namespace Depth
             if (AccelState == AccelState.Accellerating)
             {
                 var facingVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), forward) * body.velocity;
-                if (facingVelocity.magnitude < MaxSpeed)
+                if (facingVelocity.magnitude < parameters.MaxSpeed)
                 {
-                    totalForce += AccelFactor * forward * AccelerationRate * Time.fixedDeltaTime;
+                    totalForce += AccelFactor * forward * parameters.AccelerationRate * Time.fixedDeltaTime;
                 }
 
                 SetBubbles(true, false);
@@ -90,9 +72,9 @@ namespace Depth
             else if (AccelState == AccelState.Reversing)
             {
                 var facingVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), -forward) * body.velocity;
-                if (facingVelocity.magnitude < MaxSpeed)
+                if (facingVelocity.magnitude < parameters.MaxSpeed)
                 {
-                    totalForce += AccelFactor * -forward * AccelerationRate * Time.fixedDeltaTime;
+                    totalForce += AccelFactor * -forward * parameters.AccelerationRate * Time.fixedDeltaTime;
                 }
 
                 SetBubbles(false, true);
@@ -104,23 +86,23 @@ namespace Depth
 
             if (TurnState == TurnState.TurnLeft)
             {
-                if (body.angularVelocity.y > -MaxTurnRate)
+                if (body.angularVelocity.y > -parameters.MaxTurnRate)
                 {
                     var backFactor = Mathf.Sign(body.angularVelocity.y) > 0 ? 4 : 1; 
-                    body.AddTorque(backFactor * TurnFactor * -Vector3.up * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
+                    body.AddTorque(backFactor * TurnFactor * -Vector3.up * parameters.TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
                 } 
             }
             else if (TurnState == TurnState.TurnRight)
             {
-                if (body.angularVelocity.y < MaxTurnRate)
+                if (body.angularVelocity.y < parameters.MaxTurnRate)
                 {
                     var backFactor = Mathf.Sign(body.angularVelocity.y) < 0 ? 4 : 1;
-                    body.AddTorque(backFactor * TurnFactor * Vector3.up * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
+                    body.AddTorque(backFactor * TurnFactor * Vector3.up * parameters.TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
                 }
             }
-            else if ( body.angularVelocity.y > MaxTurnRate / 4.0f)
+            else if ( body.angularVelocity.y > parameters.MaxTurnRate / 4.0f)
             {
-                body.AddTorque(Vector3.up * -Mathf.Sign(body.angularVelocity.y) * TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
+                body.AddTorque(Vector3.up * -Mathf.Sign(body.angularVelocity.y) * parameters.TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
 
             var pitch = modelObject.transform.localRotation.eulerAngles.x;
@@ -129,24 +111,24 @@ namespace Depth
 
             if (RaiseState == RaiseState.Raising)
             {
-                if (Mathf.Abs(body.velocity.y) < MaxRaiseLowerSpeed)
+                if (Mathf.Abs(body.velocity.y) < parameters.MaxRaiseLowerSpeed)
                 {
-                    totalForce += Vector3.up * FloatSinkRate * Time.fixedDeltaTime;
+                    totalForce += Vector3.up * parameters.FloatSinkRate * Time.fixedDeltaTime;
                 }
             
-                if (pitch > -MaxPitch)
+                if (pitch > -parameters.MaxPitch)
                 {
                     //modelObject.transform.localRotation = Quaternion.Euler(pitch - (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
                 }
             }
             else if (RaiseState == RaiseState.Lowering)
             {
-                if (Mathf.Abs(body.velocity.y) < MaxRaiseLowerSpeed)
+                if (Mathf.Abs(body.velocity.y) < parameters.MaxRaiseLowerSpeed)
                 {
-                    totalForce += Vector3.down * FloatSinkRate * Time.fixedDeltaTime;
+                    totalForce += Vector3.down * parameters.FloatSinkRate * Time.fixedDeltaTime;
                 }
             
-                if (pitch < MaxPitch)
+                if (pitch < parameters.MaxPitch)
                 {
                     //modelObject.transform.localRotation = Quaternion.Euler(pitch + (PitchRate * Time.deltaTime * RaiseFactor), 0, 0);
                 }
@@ -162,23 +144,23 @@ namespace Depth
             if (StrafeState == StrafeState.Left)
             {
                 var leftVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), -transform.right) * body.velocity;
-                if (leftVelocity.sqrMagnitude < MaxStrafe * MaxStrafe)
+                if (leftVelocity.sqrMagnitude < parameters.MaxStrafe * parameters.MaxStrafe)
                 {
-                    totalForce += -transform.right * StrafeFactor * StrafeRate * Time.fixedDeltaTime;
+                    totalForce += -transform.right * StrafeFactor * parameters.StrafeRate * Time.fixedDeltaTime;
                 }
             }
             else if (StrafeState == StrafeState.Right)
             {
                 var rightVelocity = Vector3.Dot(new Vector3(body.velocity.x, body.velocity.y, 0), -transform.right) * body.velocity;
-                if (rightVelocity.sqrMagnitude < MaxStrafe * MaxStrafe)
+                if (rightVelocity.sqrMagnitude < parameters.MaxStrafe * parameters.MaxStrafe)
                 {
-                    totalForce += transform.right * StrafeFactor * StrafeRate * Time.fixedDeltaTime;
+                    totalForce += transform.right * StrafeFactor * parameters.StrafeRate * Time.fixedDeltaTime;
                 }
             }
 
             if (PitchFactor > 0.05 || PitchFactor < -0.05)
             {
-                body.AddRelativeTorque(PitchFactor * PitchRate * Time.fixedDeltaTime, 0, 0, ForceMode.Acceleration);
+                body.AddRelativeTorque(PitchFactor * parameters.PitchRate * Time.fixedDeltaTime, 0, 0, ForceMode.Acceleration);
             }
 
             if(totalForce.sqrMagnitude > 0)
@@ -266,8 +248,8 @@ namespace Depth
 
         public void HitCeiling()
         {
-            body.AddForce(Vector3.down * CeilingForce, ForceMode.VelocityChange);
-            body.AddRelativeTorque(Vector3.right * CeilingCorrect, ForceMode.VelocityChange );
+            body.AddForce(Vector3.down * parameters.CeilingForce, ForceMode.VelocityChange);
+            body.AddRelativeTorque(Vector3.right * parameters.CeilingCorrect, ForceMode.VelocityChange );
         }
     }
 

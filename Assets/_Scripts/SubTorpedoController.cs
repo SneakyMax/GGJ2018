@@ -5,8 +5,6 @@ namespace Depth
 {
     public class SubTorpedoController : MonoBehaviour
     {
-        public float FireInterval = 1;
-
         public GameObject TorpedoPrefab;
 
         private float lastFireTime;
@@ -29,7 +27,7 @@ namespace Depth
             if (!GameplayManager.Instance.AllowInput)
                 return;
 
-            if (sub.InputState.Buttons.B == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
+            if (sub.InputState.Buttons.B == ButtonState.Pressed && Time.time - lastFireTime > sub.Parameters.FireInterval)
             {
                 lastFireTime = Time.time;
                 FireTorpedo();

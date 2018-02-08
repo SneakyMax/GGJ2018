@@ -7,7 +7,6 @@
 		_MinViewDist ("Minimum View Distance", Float) = 20
 		_FogColor ("Fog Color", Color) = (1,1,1)
 		_MinDistTransitionDist ("Min Dist Transition Dist", Float) = 10
-		_IdentifiedColor ("Identifided Obj Color", Color) = (1,1,1,1)
 	}
 	SubShader
 	{
@@ -58,7 +57,6 @@
 			sampler2D _IdentifiedDepth;
 
 			fixed4 _FogColor;
-			fixed4 _IdentifiedColor;
 
 			float _GradientRange;
 			float _CurrentPingDist;
@@ -66,28 +64,51 @@
 			float _MinDistTransitionDist;
 			float _IdentifiedOpacity;
 
+			// Gets a z buffer depth from a linear depth (inverse of LinearEyeDepth)
+			inline float ZBufferDepth(float eyeDepth)
+			{
+				return (1.0 / (eyeDepth * _ZBufferParams.z)) - (_ZBufferParams.w / _ZBufferParams.z);
+			}
+
 			fixed4 frag (v2f i) : SV_Target
 			{
+				// Color of the normally rendered scene
 				float4 color = tex2D(_MainTex, i.uv);
-				float rawdepth = tex2D(_CameraDepthTexture, i.uv);
-				float depth = DECODE_EYEDEPTH(rawdepth);
+				// Color of the object that has been highlighted as being identified
 				float4 col_identified = tex2D(_IdentifiedTex, i.uv);
-				float identified_depth = tex2D(_IdentifiedDepth, i.uv);
+				// Float depth of the identified object (stored in render texture)
+				float identified_depth_float = tex2D(_IdentifiedDepth, i.uv);
+				float slightly_closer_identified = ZBufferDepth(LinearEyeDepth(identified_depth_float) - 0.5);
+				
+				// Float depth of the fragment
+				float depth_float = tex2D(_CameraDepthTexture, i.uv);
+				// Depth of the fragment in meters
+				float depth_meters = DECODE_EYEDEPTH(depth_float);
 
-				// Multiply by worldspace direction (no perspective divide needed).
-				float3 worldspace = i.worldDirection * depth + _WorldSpaceCameraPos;
+				// Get the world space coordinates at the fragment
+				float3 worldspace = i.worldDirection * depth_meters + _WorldSpaceCameraPos;
+				// Distance from the camera to the world space coordinates at the fragment
 				float point_distance = distance(worldspace, _WorldSpaceCameraPos);
 
+				// Close light is the minimum distance you can see. Fade it from _MinViewDist - _MinDistTransitionDist -> _MinViewDist
 				float closelight = 1.0 - (clamp((point_distance - _MinViewDist + _MinDistTransitionDist), 0, _MinDistTransitionDist) / _MinDistTransitionDist);
-				float smoothcloselight = smoothstep(0, 1, closelight);
+				float smoothcloselight = smoothstep(0, 1, closelight); // Better smoothing
 				
+				// Light the area in the pings
 				float pinglight = (_GradientRange - clamp(abs(_CurrentPingDist - point_distance), 0, _GradientRange)) / _GradientRange;
 				float smoothpinglight = smoothstep(0, 1, pinglight);
-				float dist = max(smoothcloselight, smoothpinglight);
-				float4 lighted = lerp(_FogColor, color, dist);
+
+				// Take the brighter of the ping and the close lighting
+				float light_factor = max(smoothcloselight, smoothpinglight);
+
+				// Darken to _FogColor based on the light factor
+				float4 lighted = lerp(_FogColor, color, light_factor);
+
+				// Fade each identified object by its alpha value
 				float4 fadedIdentified = lerp(float4(0, 0, 0, 0), float4(col_identified.rgb, 1), col_identified.a);
-				//return lerp(lighted, fadedIdentified, 0.5);
-				return lerp(lighted, fadedIdentified, step(rawdepth, identified_depth));
+
+				// Merge the identified objects with the main scene using the depth maps to blend correctly
+				return lerp(lighted, fadedIdentified, step(depth_float, slightly_closer_identified));
 			}
 			ENDCG
 		}

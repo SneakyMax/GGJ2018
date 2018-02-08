@@ -7,6 +7,8 @@ namespace Depth
     {
         public Rigidbody Rigidbody { get; private set; }
 
+        public int[] Layers { get { return layers; } }
+
         public Material TagMaterial;
 
         private readonly int[] layers =
@@ -46,7 +48,7 @@ namespace Depth
 
         private void SetLayer(int player)
         {
-            var layer = layers[player];
+            var layer = Layers[player];
             foreach (var renderable in GetComponentsInChildren<MeshFilter>())
             {
                 renderable.gameObject.layer = layer;

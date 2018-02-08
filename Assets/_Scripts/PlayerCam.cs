@@ -5,29 +5,44 @@ namespace Depth
     public class PlayerCam : MonoBehaviour
     {
         public Material DepthMaterial;
-        public Texture IdentifiedTexture;
-        public Texture IdentifiedDepthTexture;
-
         private Camera thisCamera;
 
         public bool IsPinging { get; set; }
 
         public float PingDist { get; set; }
 
-        public float IdentifiedMaxOpacity = 1;
+        private Material thisMaterial;
 
-        public Material ThisMaterial;
+        private RenderTexture targetTexture;
+        private RenderTexture identifiedTexture;
+        private RenderTexture identifiedDepthTexture;
+
+        private Sub sub;
 
         private void Awake()
         {
-            ThisMaterial = new Material(DepthMaterial);
+            sub = GetComponentInParent<Sub>();
+
+            thisMaterial = new Material(DepthMaterial);
             thisCamera = GetComponent<Camera>();
             thisCamera.depthTextureMode = DepthTextureMode.Depth;
+
+            targetTexture = new RenderTexture(
+                (int)FixedSettings.Instance.RenderTextureDimensions.x,
+                (int)FixedSettings.Instance.RenderTextureDimensions.y,
+                24,
+                RenderTextureFormat.ARGB32);
+
+            thisCamera.targetTexture = targetTexture;
         }
 
         public void Start ()
         {
-		
+            var identifiedEffect = GetComponentInChildren<IdentifiedEffect>();
+            identifiedTexture = identifiedEffect.ColorTexture;
+            identifiedDepthTexture = identifiedEffect.DepthTexture;
+
+            RenderController.Instance.SetPlayerCam(sub.Player, targetTexture);
         }
 
         // From online
@@ -39,7 +54,7 @@ namespace Depth
             p[3, 3] = 1.0f;
             var clipToWorld = Matrix4x4.Inverse(p * thisCamera.worldToCameraMatrix) * Matrix4x4.TRS(new Vector3(0, 0, -p[2, 2]), Quaternion.identity, Vector3.one);
 
-            ThisMaterial.SetMatrix("_ClipToWorld", clipToWorld);
+            thisMaterial.SetMatrix("_ClipToWorld", clipToWorld);
         }
 
         public void OnRenderImage(RenderTexture source, RenderTexture dest)
@@ -47,11 +62,11 @@ namespace Depth
             // Ping render
             Graphics.SetRenderTarget(dest);
             GL.LoadOrtho();
-            ThisMaterial.SetTexture("_MainTex", source);
-            ThisMaterial.SetFloat("_CurrentPingDist", PingDist);
-            ThisMaterial.SetTexture("_IdentifiedTex", IdentifiedTexture);
-            ThisMaterial.SetTexture("_IdentifiedDepth", IdentifiedDepthTexture);
-            ThisMaterial.SetPass(0);
+            thisMaterial.SetTexture("_MainTex", source);
+            thisMaterial.SetFloat("_CurrentPingDist", PingDist);
+            thisMaterial.SetTexture("_IdentifiedTex", identifiedTexture);
+            thisMaterial.SetTexture("_IdentifiedDepth", identifiedDepthTexture);
+            thisMaterial.SetPass(0);
 
             GL.Begin(GL.QUADS);
             GL.Color(Color.white);

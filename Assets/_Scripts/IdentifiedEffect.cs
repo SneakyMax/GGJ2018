@@ -1,22 +1,38 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Depth
 {
     public class IdentifiedEffect : MonoBehaviour
     {
-        public Material DepthOnly;
-        public RenderTexture DepthOnlyTexture;
+        public RenderTexture ColorTexture { get; private set; }
+        public RenderTexture DepthTexture { get; private set; }
 
         private Camera thisCamera;
         private Sub sub;
-
-        public float Opacity;
 
         private void Awake()
         {
             sub = GetComponentInParent<Sub>();
             thisCamera = GetComponent<Camera>();
             thisCamera.depthTextureMode = DepthTextureMode.Depth;
+
+            thisCamera.cullingMask = LayerMask.GetMask(String.Format("Player {0} Identified", sub.Player + 1));
+
+            // TODO one frame lag???
+            ColorTexture = new RenderTexture(
+                (int)FixedSettings.Instance.RenderTextureDimensions.x,
+                (int)FixedSettings.Instance.RenderTextureDimensions.y,
+                0,
+                RenderTextureFormat.ARGB32);
+
+            DepthTexture = new RenderTexture(
+                (int)FixedSettings.Instance.RenderTextureDimensions.x,
+                (int)FixedSettings.Instance.RenderTextureDimensions.y,
+                24,
+                RenderTextureFormat.Depth);
+
+            thisCamera.SetTargetBuffers(ColorTexture.colorBuffer, DepthTexture.depthBuffer);
         }
 
         public void OnPreCull()
@@ -33,37 +49,6 @@ namespace Depth
             {
                 info.Taggable.Reset(info);
             }
-        }
-
-        public void OnRenderImage(RenderTexture src, RenderTexture dest)
-        {
-            if (DepthOnly == null)
-            {
-                Graphics.Blit(src, dest);
-                return;
-            }
-
-            Graphics.SetRenderTarget(DepthOnlyTexture);
-            GL.LoadOrtho();
-            DepthOnly.SetTexture("_MainTex", src);
-            DepthOnly.SetPass(0);
-
-            GL.Begin(GL.QUADS);
-            GL.Color(Color.white);
-            GL.TexCoord2(0, 0);
-            GL.Vertex3(0, 0, 0.1f);
-
-            GL.TexCoord2(1, 0);
-            GL.Vertex3(1, 0, 0.1f);
-
-            GL.TexCoord2(1, 1);
-            GL.Vertex3(1, 1, 0.1f);
-
-            GL.TexCoord2(0, 1);
-            GL.Vertex3(0, 1, 0.1f);
-            GL.End();
-
-            Graphics.Blit(src, dest);
         }
     }
 }

@@ -17,6 +17,9 @@ namespace Depth
 
         public void ShowPing(Sub player, Vector3 worldSpacePoint)
         {
+            if (player == null)
+                return;
+            
             var direction = worldSpacePoint - player.transform.position;
             if (Vector3.Dot(direction, player.transform.forward) < 0)
                 return; // Behind you

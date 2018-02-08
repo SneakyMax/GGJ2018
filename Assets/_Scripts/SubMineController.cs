@@ -2,7 +2,6 @@
 using UnityEngine;
 using XInputDotNetPure;
 
-
 class SubMineController : MonoBehaviour
 {
 	public float FireInterval = 1;

@@ -1,33 +1,36 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
-public class TaggableRenderer : MonoBehaviour
+namespace Depth
 {
-    public Material TagMaterial;
-
-    private Material originalMaterial;
-    private MeshRenderer meshRenderer;
-    private Material myMaterial;
-
-    public void Awake()
+    [RequireComponent(typeof(MeshRenderer))]
+    public class TaggableRenderer : MonoBehaviour
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-    }
+        public Material TagMaterial;
 
-    public void Start()
-    {
-        myMaterial = new Material(TagMaterial);
-        originalMaterial = meshRenderer.material;
-    }
+        private Material originalMaterial;
+        private MeshRenderer meshRenderer;
+        private Material myMaterial;
 
-    public void SetTag(float opacity)
-    {
-        meshRenderer.material = myMaterial;
-        myMaterial.SetFloat("_Opacity", opacity);
-    }
+        public void Awake()
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
 
-    public void Reset()
-    {
-        meshRenderer.material = originalMaterial;
+        public void Start()
+        {
+            myMaterial = new Material(TagMaterial);
+            originalMaterial = meshRenderer.material;
+        }
+
+        public void SetTag(float opacity)
+        {
+            meshRenderer.material = myMaterial;
+            myMaterial.SetFloat("_Opacity", opacity);
+        }
+
+        public void Reset()
+        {
+            meshRenderer.material = originalMaterial;
+        }
     }
 }

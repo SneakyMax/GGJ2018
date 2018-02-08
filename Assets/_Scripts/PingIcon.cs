@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets
+namespace Depth
 {
     public class PingIcon : MonoBehaviour
     {
@@ -22,7 +18,7 @@ namespace Assets
             StartCoroutine(Coroutine());
         }
 
-        public IEnumerator Coroutine()
+        private IEnumerator Coroutine()
         {
             var startTime = Time.time;
             while (Time.time - startTime < Duration)

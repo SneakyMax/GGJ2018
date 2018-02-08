@@ -2,19 +2,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FormattableText : MonoBehaviour
+namespace Depth
 {
-    private Text text;
-    private string format;
-
-    public void Awake()
+    public class FormattableText : MonoBehaviour
     {
-        text = GetComponent<Text>();
-        format = text.text;
-    }
+        private Text text;
+        private string format;
 
-    public void Format(params object[] args)
-    {
-        text.text = String.Format(format, args);
+        public void Awake()
+        {
+            text = GetComponent<Text>();
+            format = text.text;
+        }
+
+        public void Format(params object[] args)
+        {
+            text.text = String.Format(format, args);
+        }
     }
 }

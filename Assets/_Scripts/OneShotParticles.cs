@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
-public class OneShotParticles : MonoBehaviour
+namespace Depth
 {
-    private ParticleSystem particles;
-
-    public void Start()
+    [RequireComponent(typeof(ParticleSystem))]
+    public class OneShotParticles : MonoBehaviour
     {
-        particles = GetComponent<ParticleSystem>();
-    }
+        private ParticleSystem particles;
 
-    public void Update()
-    {
-        if (particles.IsAlive() == false)
+        public void Start()
         {
-            Destroy(gameObject);
+            particles = GetComponent<ParticleSystem>();
+        }
+
+        public void Update()
+        {
+            if (particles.IsAlive() == false)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

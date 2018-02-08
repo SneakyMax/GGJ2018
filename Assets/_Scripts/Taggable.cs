@@ -1,93 +1,95 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Taggable : MonoBehaviour
+namespace Depth
 {
-    public Rigidbody Rigidbody { get; private set; }
-
-    public Material TagMaterial;
-
-    private int[] layers =
+    public class Taggable : MonoBehaviour
     {
-        8, 9, 10, 11
-    };
+        public Rigidbody Rigidbody { get; private set; }
 
-    private IList<TaggableRenderer> subRenderers;
+        public Material TagMaterial;
 
-    void Awake()
-    {
-        subRenderers = new List<TaggableRenderer>();
-        Rigidbody = GetComponentInChildren<Rigidbody>();
-    }
+        private readonly int[] layers =
+        {
+            8, 9, 10, 11
+        };
 
-	void Start ()
-	{
-	    TaggableManager.Instance.Add(this);
+        private IList<TaggableRenderer> subRenderers;
 
-	    foreach (var childMeshRenderer in GetComponentsInChildren<MeshRenderer>())
-	    {
-	        var subRenderer = childMeshRenderer.gameObject.AddComponent<TaggableRenderer>();
-	        subRenderer.TagMaterial = TagMaterial;
-	        subRenderers.Add(subRenderer);
-	    }
-	}
+        private void Awake()
+        {
+            subRenderers = new List<TaggableRenderer>();
+            Rigidbody = GetComponentInChildren<Rigidbody>();
+        }
 
-    void OnDestroy()
-    {
-        TaggableManager.Instance.Remove(this);
-    }
+        private void Start ()
+        {
+            TaggableManager.Instance.Add(this);
 
-    void Update ()
-    {
+            foreach (var childMeshRenderer in GetComponentsInChildren<MeshRenderer>())
+            {
+                var subRenderer = childMeshRenderer.gameObject.AddComponent<TaggableRenderer>();
+                subRenderer.TagMaterial = TagMaterial;
+                subRenderers.Add(subRenderer);
+            }
+        }
+
+        public void OnDestroy()
+        {
+            TaggableManager.Instance.Remove(this);
+        }
+
+        private void Update ()
+        {
 		
-	}
-
-    public void SetLayer(int player)
-    {
-        var layer = layers[player];
-        foreach (var renderable in GetComponentsInChildren<MeshFilter>())
-        {
-            renderable.gameObject.layer = layer;
         }
-    }
 
-    public void ResetLayer()
-    {
-        foreach (var renderable in GetComponentsInChildren<MeshFilter>())
+        private void SetLayer(int player)
         {
-            renderable.gameObject.layer = 0;
+            var layer = layers[player];
+            foreach (var renderable in GetComponentsInChildren<MeshFilter>())
+            {
+                renderable.gameObject.layer = layer;
+            }
         }
-    }
 
-    public void ResetMaterials()
-    {
-        foreach (var subRenderer in subRenderers)
+        private void ResetLayer()
         {
-            subRenderer.Reset();
+            foreach (var renderable in GetComponentsInChildren<MeshFilter>())
+            {
+                renderable.gameObject.layer = 0;
+            }
         }
-    }
 
-    public void OverwriteMaterials(float opacity)
-    {
-        foreach (var subRenderer in subRenderers)
+        private void ResetMaterials()
         {
-            subRenderer.SetTag(opacity);
+            foreach (var subRenderer in subRenderers)
+            {
+                subRenderer.Reset();
+            }
         }
-    }
 
-    public void Reset(TaggableManager.TagInfo info)
-    {
-        ResetLayer();
-        ResetMaterials();
-    }
+        private void OverwriteMaterials(float opacity)
+        {
+            foreach (var subRenderer in subRenderers)
+            {
+                subRenderer.SetTag(opacity);
+            }
+        }
 
-    public void Prepare(TaggableManager.TagInfo info)
-    {
-        SetLayer(info.Player);
+        public void Reset(TaggableManager.TagInfo info)
+        {
+            ResetLayer();
+            ResetMaterials();
+        }
 
-        var opacity = 1.0f - Mathf.Clamp01((Time.time - info.StartTime) / info.Duration);
+        public void Prepare(TaggableManager.TagInfo info)
+        {
+            SetLayer(info.Player);
 
-        OverwriteMaterials(opacity);
+            var opacity = 1.0f - Mathf.Clamp01((Time.time - info.StartTime) / info.Duration);
+
+            OverwriteMaterials(opacity);
+        }
     }
 }

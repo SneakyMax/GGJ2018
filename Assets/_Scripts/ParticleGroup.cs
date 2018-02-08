@@ -1,53 +1,54 @@
 ﻿using UnityEngine;
 
-public class ParticleGroup : MonoBehaviour
+namespace Depth
 {
-    public bool EmittingAtStart;
-
-    private ParticleSystem[] systems;
-
-    public void Awake()
+    public class ParticleGroup : MonoBehaviour
     {
-        systems = GetComponentsInChildren<ParticleSystem>();
-    }
+        public bool EmittingAtStart;
 
-    public void Start()
-    {
-        SetEmitting(EmittingAtStart);
-        emitting = EmittingAtStart;
-    }
+        private ParticleSystem[] systems;
 
-    public void OnEnable()
-    {
-        SetEmitting(emitting);
-    }
-
-    private bool emitting;
-
-    public bool Emitting
-    {
-        get { return emitting; }
-        set
+        public void Awake()
         {
-            if (value != emitting)
+            systems = GetComponentsInChildren<ParticleSystem>();
+        }
+
+        public void Start()
+        {
+            SetEmitting(EmittingAtStart);
+            emitting = EmittingAtStart;
+        }
+
+        public void OnEnable()
+        {
+            SetEmitting(emitting);
+        }
+
+        private bool emitting;
+
+        public bool Emitting
+        {
+            get { return emitting; }
+            set
             {
+                if (value == emitting) return;
                 SetEmitting(value);
                 emitting = value;
             }
         }
-    }
 
-    private void SetEmitting(bool isEmitting)
-    {
-        foreach (var system in systems)
+        private void SetEmitting(bool isEmitting)
         {
-            if (isEmitting)
+            foreach (var system in systems)
             {
-                system.Play();
-            }
-            else
-            {
-                system.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+                if (isEmitting)
+                {
+                    system.Play();
+                }
+                else
+                {
+                    system.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+                }
             }
         }
     }

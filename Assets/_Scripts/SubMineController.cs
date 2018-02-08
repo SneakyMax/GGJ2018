@@ -1,48 +1,48 @@
-﻿using Assets;
-using UnityEngine;
+﻿using UnityEngine;
 using XInputDotNetPure;
 
-class SubMineController : MonoBehaviour
+namespace Depth
 {
-	public float FireInterval = 1;
+    public class SubMineController : MonoBehaviour
+    {
+        public float FireInterval = 1;
 
-	public GameObject MinePrefab;
+        public GameObject MinePrefab;
 
-	private float lastFireTime;
+        private float lastFireTime;
+        private Sub sub;
+        private Transform minePoint;
 
-	private Sub sub;
+        public void Awake()
+        {
+            sub = GetComponent<Sub>();
+            minePoint = GetComponentInChildren<MinePoint>().transform;
+        }
 
-	private Transform minePoint;
+        public void Update()
+        {
+            if (sub.IsDestroyed)
+                return;
 
-	public void Awake()
-	{
-		sub = GetComponent<Sub>();
-		minePoint = GetComponentInChildren<MinePoint>().transform;
-	}
+            if (!GameplayManager.Instance.AllowInput)
+                return;
 
-	public void Update()
-	{
-		if (sub.IsDestroyed)
-			return;
+            if (sub.InputState.Buttons.Y == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
+            {
+                lastFireTime = Time.time;
+                FireMine();
+            }
+        }
 
-        if (!GameplayManager.Instance.AllowInput)
-            return;
+        private void FireMine()
+        {
+            var newMineObj = Instantiate(MinePrefab, minePoint.position, minePoint.rotation);
+            var mine = newMineObj.GetComponent<Mine>();
+            mine.Parent = sub;
 
-        if (sub.InputState.Buttons.Y == ButtonState.Pressed && Time.time - lastFireTime > FireInterval)
-		{
-			lastFireTime = Time.time;
-			FireMine();
-		}
-	}
+            SoundManager.PlaySound("Deploy_or drop item");
 
-	private void FireMine()
-	{
-		var newMineObj = Instantiate(MinePrefab, minePoint.position, minePoint.rotation);
-		var mine = newMineObj.GetComponent<Mine>();
-		mine.Parent = sub;
-
-        SoundManager.PlaySound("Deploy_or drop item");
-
-        TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
-	}
+            TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
+        }
+    }
 }

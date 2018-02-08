@@ -1,67 +1,69 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class IdentifiedEffect : MonoBehaviour
+namespace Depth
 {
-    public Material DepthOnly;
-    public RenderTexture DepthOnlyTexture;
-    private Camera thisCamera;
-    private Sub sub;
-
-    public float Opacity;
-
-    void Awake()
+    public class IdentifiedEffect : MonoBehaviour
     {
-        sub = GetComponentInParent<Sub>();
-        thisCamera = GetComponent<Camera>();
-        thisCamera.depthTextureMode = DepthTextureMode.Depth;
-    }
+        public Material DepthOnly;
+        public RenderTexture DepthOnlyTexture;
 
-    public void OnPreCull()
-    {
-        foreach (var info in TaggableManager.Instance.Tagged[sub.Player])
+        private Camera thisCamera;
+        private Sub sub;
+
+        public float Opacity;
+
+        private void Awake()
         {
-            info.Taggable.Prepare(info);
+            sub = GetComponentInParent<Sub>();
+            thisCamera = GetComponent<Camera>();
+            thisCamera.depthTextureMode = DepthTextureMode.Depth;
         }
-    }
 
-    public void OnPostRender()
-    {
-        foreach (var info in TaggableManager.Instance.Tagged[sub.Player])
+        public void OnPreCull()
         {
-            info.Taggable.Reset(info);
+            foreach (var info in TaggableManager.Instance.Tagged[sub.Player])
+            {
+                info.Taggable.Prepare(info);
+            }
         }
-    }
 
-    public void OnRenderImage(RenderTexture src, RenderTexture dest)
-    {
-        if (DepthOnly == null)
+        public void OnPostRender()
         {
+            foreach (var info in TaggableManager.Instance.Tagged[sub.Player])
+            {
+                info.Taggable.Reset(info);
+            }
+        }
+
+        public void OnRenderImage(RenderTexture src, RenderTexture dest)
+        {
+            if (DepthOnly == null)
+            {
+                Graphics.Blit(src, dest);
+                return;
+            }
+
+            Graphics.SetRenderTarget(DepthOnlyTexture);
+            GL.LoadOrtho();
+            DepthOnly.SetTexture("_MainTex", src);
+            DepthOnly.SetPass(0);
+
+            GL.Begin(GL.QUADS);
+            GL.Color(Color.white);
+            GL.TexCoord2(0, 0);
+            GL.Vertex3(0, 0, 0.1f);
+
+            GL.TexCoord2(1, 0);
+            GL.Vertex3(1, 0, 0.1f);
+
+            GL.TexCoord2(1, 1);
+            GL.Vertex3(1, 1, 0.1f);
+
+            GL.TexCoord2(0, 1);
+            GL.Vertex3(0, 1, 0.1f);
+            GL.End();
+
             Graphics.Blit(src, dest);
-            return;
         }
-
-        Graphics.SetRenderTarget(DepthOnlyTexture);
-        GL.LoadOrtho();
-        DepthOnly.SetTexture("_MainTex", src);
-        DepthOnly.SetPass(0);
-
-        GL.Begin(GL.QUADS);
-        GL.Color(Color.white);
-        GL.TexCoord2(0, 0);
-        GL.Vertex3(0, 0, 0.1f);
-
-        GL.TexCoord2(1, 0);
-        GL.Vertex3(1, 0, 0.1f);
-
-        GL.TexCoord2(1, 1);
-        GL.Vertex3(1, 1, 0.1f);
-
-        GL.TexCoord2(0, 1);
-        GL.Vertex3(0, 1, 0.1f);
-        GL.End();
-
-        Graphics.Blit(src, dest);
     }
 }

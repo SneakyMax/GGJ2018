@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets
+namespace Depth
 {
     public class Helpers : MonoBehaviour
     {
@@ -31,19 +31,19 @@ namespace Assets
             instanceTransform.anchoredPosition = CameraSpaceToMultiplyerSpace(screenSpace);
         }
 
-        public RectTransform GetPlayerArea(Sub player)
+        private RectTransform GetPlayerArea(Sub player)
         {
             return PlayerAreas[player.Player];
         }
 
-        public Vector2 WorldPointToScreenSpace(Vector3 worldPoint, Camera cam)
+        public static Vector2 WorldPointToScreenSpace(Vector3 worldPoint, Camera cam)
         {
             var camSpace = cam.WorldToScreenPoint(worldPoint);
             var normalized = new Vector2(camSpace.x / cam.pixelWidth, camSpace.y / cam.pixelHeight);
             return normalized;
         }
 
-        public Vector2 CameraSpaceToMultiplyerSpace(Vector2 cameraSpace)
+        public static Vector2 CameraSpaceToMultiplyerSpace(Vector2 cameraSpace)
         {
             return new Vector2(960f * cameraSpace.x, 540f * cameraSpace.y);
         }

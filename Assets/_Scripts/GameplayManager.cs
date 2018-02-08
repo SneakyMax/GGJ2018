@@ -1,38 +1,31 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets
+namespace Depth
 {
     public class GameplayManager : MonoBehaviour
     {
         public event Action GameStarted;
 
-        public static GameplayManager Instance { get; set; }
+        public static GameplayManager Instance { get; private set; }
 
-        public float TimeRemaining { get { return GameLength - (Time.time - gameStartTime); } }
+        private float TimeRemaining { get { return GameLength - (Time.time - gameStartTime); } }
 
         public FormattableText TimeLeftText;
-
         public FormattableText CountdownText;
-
-        public bool AllowInput = false;
-
         public GameObject[] VictorySplashes;
-
         public float GameLength = 60;
-
         public float WinnerDuration = 10;
 
-        private float gameStartTime;
-
+        public bool AllowInput { get; private set; }
         public bool IsGameStarted { get; private set; }
         public bool IsGameEnded { get; private set; }
-
+        
+        private float gameStartTime;
+        
         public void Awake()
         {
             Instance = this;
@@ -47,7 +40,7 @@ namespace Assets
             StartCoroutine(StartCountdownCo());
         }
 
-        public IEnumerator StartCountdownCo()
+        private IEnumerator StartCountdownCo()
         {
             TimeLeftText.Format(0, 0);
             CountdownText.gameObject.SetActive(true);
@@ -61,7 +54,7 @@ namespace Assets
             GameStart();
         }
 
-        public void GameStart()
+        private void GameStart()
         {
             gameStartTime = Time.time;
             AllowInput = true;
@@ -119,7 +112,7 @@ namespace Assets
             ReloadGame();
         }
 
-        private void ReloadGame()
+        private static void ReloadGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

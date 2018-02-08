@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MinePoint : MonoBehaviour
+namespace Depth
 {
+    public class MinePoint : MonoBehaviour
+    {
+    }
 }

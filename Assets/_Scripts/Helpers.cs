@@ -50,5 +50,24 @@ namespace Depth
         {
             return new Vector2(960f * cameraSpace.x, 540f * cameraSpace.y);
         }
+
+        public static void FullscreenQuad()
+        {
+            GL.LoadOrtho();
+            GL.Begin(GL.QUADS);
+            GL.Color(Color.white);
+            GL.TexCoord2(0, 0);
+            GL.Vertex3(0, 0, 0.1f);
+
+            GL.TexCoord2(1, 0);
+            GL.Vertex3(1, 0, 0.1f);
+
+            GL.TexCoord2(1, 1);
+            GL.Vertex3(1, 1, 0.1f);
+
+            GL.TexCoord2(0, 1);
+            GL.Vertex3(0, 1, 0.1f);
+            GL.End();
+        }
     }
 }

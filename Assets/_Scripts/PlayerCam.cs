@@ -12,12 +12,16 @@ namespace Depth
         public float PingDist { get; set; }
 
         private Material thisMaterial;
+        private Material blitCopy;
 
         private RenderTexture targetTexture;
         private RenderTexture identifiedTexture;
         private RenderTexture identifiedDepthTexture;
 
         private Sub sub;
+
+        private int rtWidth;
+        private int rtHeight;
 
         private void Awake()
         {
@@ -27,16 +31,16 @@ namespace Depth
             thisCamera = GetComponent<Camera>();
             thisCamera.depthTextureMode = DepthTextureMode.Depth;
 
-            targetTexture = new RenderTexture(
-                (int)FixedSettings.Instance.RenderTextureDimensions.x,
-                (int)FixedSettings.Instance.RenderTextureDimensions.y,
-                24,
-                RenderTextureFormat.ARGB32);
+            rtWidth = FixedSettings.Instance.RTWidth;
+            rtHeight = FixedSettings.Instance.RTHeight;
 
+            targetTexture = new RenderTexture(rtWidth, rtHeight, 24, RenderTextureFormat.ARGB32);
             thisCamera.targetTexture = targetTexture;
+
+            blitCopy = new Material(Shader.Find("Hidden/BlitCopy"));
         }
 
-        public void Start ()
+        public void Start()
         {
             var identifiedEffect = GetComponentInChildren<IdentifiedEffect>();
             identifiedTexture = identifiedEffect.ColorTexture;
@@ -64,27 +68,13 @@ namespace Depth
         {
             // Ping render
             Graphics.SetRenderTarget(dest);
-            GL.LoadOrtho();
             thisMaterial.SetTexture("_MainTex", source);
             thisMaterial.SetFloat("_CurrentPingDist", PingDist);
             thisMaterial.SetTexture("_IdentifiedTex", identifiedTexture);
             thisMaterial.SetTexture("_IdentifiedDepth", identifiedDepthTexture);
+
             thisMaterial.SetPass(0);
-
-            GL.Begin(GL.QUADS);
-            GL.Color(Color.white);
-            GL.TexCoord2(0, 0);
-            GL.Vertex3(0, 0, 0.1f);
-
-            GL.TexCoord2(1, 0);
-            GL.Vertex3(1, 0, 0.1f);
-
-            GL.TexCoord2(1, 1);
-            GL.Vertex3(1, 1, 0.1f);
-
-            GL.TexCoord2(0, 1);
-            GL.Vertex3(0, 1, 0.1f);
-            GL.End();
+            Helpers.FullscreenQuad();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
+using Depth.UI;
 using UnityEngine;
-using UnityEngine.UI;
 using XInputDotNetPure;
 
 namespace Depth
@@ -14,41 +14,52 @@ namespace Depth
         public GamePadState InputState { get; private set; }
         public int Kills { get; private set; }
         public Camera SubCamera { get; private set; }
+        public SubModifiers Modifiers { get; private set; }
         public SubParameters Parameters { get; private set; }
 
         public PlayerCam Cam;
 
         /// <summary>0-indexed</summary>
         public int Player;
-        public Image PingReadyIcon;
-        public RectTransform KillCounter;
         public GameObject KillPrefab;
         public float AimDistance = 30;
         public RectTransform AimReticule;
-        public FormattableText BlownUpText;
-        public GameObject SpawnPoint;
         public GameObject ExplosionPrefab;
         public float RespawnDelay = 3;
+
+        public PlayerPanel Panel;
 
         private float maxSubHeight;
 
         public void Awake()
         {
+            IsDestroyed = true;
             Taggable = GetComponent<Taggable>();
             Targetable = GetComponent<TorpedoTargetable>();
 
             Targetable.OnHitByTorpedo += BlowUp;
             Targetable.OnHitByMine += BlowUp;
             Body = GetComponentInChildren<SubBody>();
-            Parameters = GetComponentInChildren<SubParameters>();
+            Modifiers = GetComponentInChildren<SubModifiers>();
+            Parameters = Modifiers.GetParameters();
 
             SubCamera = Cam.GetComponent<Camera>();
+            IsDestroyed = true;
+
+            maxSubHeight = GameObject.FindGameObjectWithTag("Ceiling").transform.position.y;
+        }
+
+        public void Start()
+        {
+            GameplayManager.Instance.GameStarted += OnGameStarted;
+            SubManager.Instance.Subs.Add(this);
+            Respawn();
         }
 
         private void OnGameStarted()
         {
             Kills = 0;
-            foreach (Transform child in KillCounter)
+            foreach (Transform child in Panel.KillIndicator.transform)
             {
                 Destroy(child.gameObject);
             }
@@ -58,7 +69,7 @@ namespace Depth
         {
             Kills++;
 
-            Instantiate(KillPrefab, KillCounter);
+            Instantiate(KillPrefab, Panel.KillIndicator.transform);
         }
 
         private void BlowUp(Mine mine)
@@ -81,8 +92,7 @@ namespace Depth
             GetComponentInChildren<SubBody>(true).gameObject.SetActive(false);
             IsDestroyed = true;
 
-            BlownUpText.gameObject.SetActive(true);
-            BlownUpText.Format(playerCaused + 1);
+            Panel.DeadPanel.gameObject.SetActive(true);
 
             if (playerCaused != Player)
                 SubManager.Instance.GetSub(playerCaused).GotKill();
@@ -90,29 +100,24 @@ namespace Depth
             // explosion of ship is done in the mine or torpedo
             // SoundManager.PlaySound("explosion_far1");
 
-            StartCoroutine(Respawn());
+            StartCoroutine(RespawnAfterDelay());
         }
 
-        private IEnumerator Respawn()
+        private IEnumerator RespawnAfterDelay()
         {
             yield return new WaitForSeconds(RespawnDelay);
-            IsDestroyed = false;
-            transform.position = SpawnPoint.transform.position;
-            transform.rotation = SpawnPoint.transform.rotation;
-            GetComponentInChildren<SubBody>(true).gameObject.SetActive(true);
-            BlownUpText.gameObject.SetActive(false);
+            Respawn();
         }
 
-        public void Start()
+        private void Respawn()
         {
-            GameplayManager.Instance.GameStarted += OnGameStarted;
-            SubManager.Instance.Subs.Add(this);
-            BlownUpText.gameObject.SetActive(false);
+            IsDestroyed = false;
 
-            transform.position = SpawnPoint.transform.position;
-            transform.rotation = SpawnPoint.transform.rotation;
+            var spawnPosition = SpawnPoints.Instance.GetSpawnPoint(Player);
+            transform.SetPositionAndRotation(spawnPosition.position, spawnPosition.rotation);
 
-            maxSubHeight = GameObject.FindGameObjectWithTag("Ceiling").transform.position.y;
+            GetComponentInChildren<SubBody>(true).gameObject.SetActive(true);
+            Panel.DeadPanel.gameObject.SetActive(false);
         }
 
         public void Update()

@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4999759711836850}
   - component: {fileID: 114288005036612334}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cam Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4858165459234940}
   - component: {fileID: 114737455530275604}
-  - component: {fileID: 114835236348974394}
+  - component: {fileID: 114538071089080106}
   m_Layer: 0
   m_Name: Sub A1
   m_TagString: Untagged
@@ -638,6 +638,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dde4acf0383c43fe87806ec165fbc8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114538071089080106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1557720911321380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c29ba502ee7a54fbe714439c08dcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bubbles: {fileID: 114389539607175268}
+  BackwardBubbles: {fileID: 114417456337153104}
+  MaxRaiseLowerSpeed: 1
+  MaxTurnRate: 1
+  MaxSpeed: 1
+  MaxStrafe: 1
+  MaxPitch: 1
+  AccelerationRate: 1
+  BrakeRate: 1
+  TurnAcceleration: 1
+  FloatSinkRate: 1
+  PitchRate: 1
+  StrafeRate: 1
+  CeilingForce: 1
+  CeilingCorrect: 1
+  FireInterval: 1
+  MineInterval: 1
 --- !u!114 &114737455530275604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -662,34 +690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1683cfecd968f6341b7c8060cbba9d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114835236348974394
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1557720911321380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3590cd57e3052bc4786cd5a00a3b3661, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Bubbles: {fileID: 114389539607175268}
-  BackwardBubbles: {fileID: 114417456337153104}
-  MaxRaiseLowerSpeed: 7
-  MaxTurnRate: 1
-  MaxSpeed: 1000
-  MaxStrafe: 10
-  MaxPitch: 10
-  AccelerationRate: 5000
-  BrakeRate: 1
-  TurnAcceleration: 150
-  FloatSinkRate: 5000
-  PitchRate: 70
-  StrafeRate: 1000
-  CeilingForce: 100
-  CeilingCorrect: 1
-  FireInterval: 1
-  MineInterval: 10
 --- !u!198 &198023261537662712
 ParticleSystem:
   m_ObjectHideFlags: 1

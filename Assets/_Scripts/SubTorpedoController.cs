@@ -27,6 +27,9 @@ namespace Depth
             if (!GameplayManager.Instance.AllowInput)
                 return;
 
+            var percentCooldown = (Time.time - lastFireTime) / sub.Parameters.FireInterval;
+            sub.Panel.TorpedoIndicator.Radial.Percent = 1.0f - percentCooldown;
+
             if (sub.InputState.Buttons.B == ButtonState.Pressed && Time.time - lastFireTime > sub.Parameters.FireInterval)
             {
                 lastFireTime = Time.time;

@@ -25,7 +25,10 @@ namespace Depth
             if (!GameplayManager.Instance.AllowInput)
                 return;
 
-            if (sub.InputState.Buttons.Y == ButtonState.Pressed && Time.time - lastFireTime > sub.Parameters.FireInterval)
+            var percentCooldown = (Time.time - lastFireTime) / sub.Parameters.MineInterval;
+            sub.Panel.MineIndicator.Radial.Percent = 1.0f - percentCooldown;
+
+            if (sub.InputState.Buttons.Y == ButtonState.Pressed && Time.time - lastFireTime > sub.Parameters.MineInterval)
             {
                 lastFireTime = Time.time;
                 FireMine();

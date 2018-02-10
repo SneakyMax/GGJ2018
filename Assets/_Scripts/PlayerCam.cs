@@ -12,7 +12,6 @@ namespace Depth
         public float PingDist { get; set; }
 
         private Material thisMaterial;
-        private Material blitCopy;
 
         private RenderTexture targetTexture;
         private RenderTexture identifiedTexture;
@@ -36,8 +35,6 @@ namespace Depth
 
             targetTexture = new RenderTexture(rtWidth, rtHeight, 24, RenderTextureFormat.ARGB32);
             thisCamera.targetTexture = targetTexture;
-
-            blitCopy = new Material(Shader.Find("Hidden/BlitCopy"));
         }
 
         public void Start()

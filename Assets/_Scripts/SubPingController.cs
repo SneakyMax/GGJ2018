@@ -6,15 +6,6 @@ namespace Depth
 {
     public class SubPingController : MonoBehaviour
     {
-        /// <summary>Ping time in seconds</summary>
-        public float PingTime;
-
-        /// <summary>Ping range in meters.</summary>
-        public float PingRange;
-
-        /// <summary>Time that you can see people that have been identified.</summary>
-        public float IdentifiedTime = 3;
-
         private bool isPinging;
         private float currentPingDist = -5000;
         private float pingStartTime;
@@ -50,7 +41,8 @@ namespace Depth
 
         private void UpdatePing()
         {
-            currentPingDist = ((Time.time - pingStartTime) / PingTime) * PingRange;
+            var pingPercentFinished = (Time.time - pingStartTime) / sub.Parameters.PingTime;
+            currentPingDist = pingPercentFinished * sub.Parameters.PingRange;
 
             foreach (var taggable in TaggableManager.Instance.AllTaggable)
             {
@@ -72,14 +64,16 @@ namespace Depth
                     {
                         if (hasTagged.Contains(taggable) == false)
                         {
-                            TaggableManager.Instance.Tag(taggable, sub.Player, IdentifiedTime);
+                            TaggableManager.Instance.Tag(taggable, sub.Player, sub.Parameters.IdentifiedTime);
                             hasTagged.Add(taggable);
                         }
                     }
                 }
             }
 
-            if (Time.time - pingStartTime > PingTime)
+            sub.Panel.PingIndicator.Radial.Percent = 1.0f - pingPercentFinished;
+
+            if (Time.time - pingStartTime > sub.Parameters.PingTime)
             {
                 PingEnded();
             }
@@ -92,7 +86,8 @@ namespace Depth
             sub.Cam.IsPinging = false;
             currentPingDist = -5000;
             hasTagged.Clear();
-            sub.PingReadyIcon.enabled = true;
+
+            sub.Panel.PingIndicator.Radial.Percent = 0;
         }
 
         private void StartPing()
@@ -102,8 +97,8 @@ namespace Depth
             currentPingDist = 0;
             sub.Cam.IsPinging = true;
 
-            TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, IdentifiedTime);
-            sub.PingReadyIcon.enabled = false;
+            TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, sub.Parameters.IdentifiedTime);
+            sub.Panel.PingIndicator.Radial.Percent = 1;
 
             SoundManager.PlaySound("Sonar", (float)0.8);
 

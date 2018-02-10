@@ -52,14 +52,14 @@ namespace Depth
 
         public void OnRenderImage(RenderTexture src, RenderTexture dest)
         {
-            Graphics.SetRenderTarget(dest);
-            postProcessMaterial.SetTexture("_MainTex", src);
-            postProcessMaterial.SetPass(0);
-            Helpers.FullscreenQuad();
-
             Graphics.SetRenderTarget(DepthTexture);
             postProcessMaterial.SetTexture("_MainTex", src);
             postProcessMaterial.SetPass(1);
+            Helpers.FullscreenQuad();
+
+            Graphics.SetRenderTarget(dest);
+            postProcessMaterial.SetTexture("_MainTex", src);
+            postProcessMaterial.SetPass(0);
             Helpers.FullscreenQuad();
         }
     }

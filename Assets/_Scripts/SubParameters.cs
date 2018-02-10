@@ -1,32 +1,49 @@
-﻿using UnityEngine;
-
-namespace Depth
+﻿namespace Depth
 {
-    public class SubParameters : MonoBehaviour
+    public class SubParameters
     {
-        [Header("Sub-Specific")]
-        public ParticleGroup Bubbles;
-        public ParticleGroup BackwardBubbles;
+        public float MaxRaiseLowerSpeed { get; private set; }
+        public float MaxTurnRate { get; private set; }
+        public float MaxSpeed { get; private set; }
+        public float MaxStrafe { get; private set; }
+        public float MaxPitch { get; private set; }
+        
+        public float AccelerationRate { get; private set; }
+        public float BrakeRate { get; private set; }
+        public float TurnAcceleration { get; private set; }
+        public float FloatSinkRate { get; private set; }
+        public float PitchRate { get; private set; }
+        public float StrafeRate { get; private set; }
+        public float CeilingForce { get; private set; }
+        public float CeilingCorrect { get; private set; }
+        public float FireInterval { get; private set; }
+        public float MineInterval { get; private set; }
+        public float IdentifiedTime { get; private set; }
+        public float PingRange { get; private set; }
+        public float PingTime { get; private set; }
 
-        [Header("Movement Limits")]
-        public float MaxRaiseLowerSpeed = 7;
-        public float MaxTurnRate = 1;
-        public float MaxSpeed = 1000;
-        public float MaxStrafe = 10;
-        public float MaxPitch = 10;
+        public SubParameters(SubModifiers modifiers)
+        {
+            var baseParams = BaseSubParameters.Instance;
 
-        [Header("Rates")]
-        public float AccelerationRate = 5000;
-        public float BrakeRate = 1;
-        public float TurnAcceleration = 150;
-        public float FloatSinkRate = 5000;
-        public float PitchRate = 70;
-        public float StrafeRate = 1000;
-        public float CeilingForce = 100;
-        public float CeilingCorrect = 1;
-
-        [Header("Abilities")]
-        public float FireInterval = 1;
-        public float MineInterval = 10;
+            MaxRaiseLowerSpeed = baseParams.MaxRaiseLowerSpeed * modifiers.MaxRaiseLowerSpeed;
+            MaxTurnRate = baseParams.MaxTurnRate * modifiers.MaxTurnRate;
+            MaxSpeed = baseParams.MaxSpeed * modifiers.MaxSpeed;
+            MaxStrafe = baseParams.MaxStrafe * modifiers.MaxStrafe;
+            MaxPitch = baseParams.MaxPitch * modifiers.MaxPitch;
+            AccelerationRate = baseParams.AccelerationRate * modifiers.AccelerationRate;
+            BrakeRate = baseParams.BrakeRate * modifiers.BrakeRate;
+            TurnAcceleration = baseParams.TurnAcceleration * modifiers.TurnAcceleration;
+            FloatSinkRate = baseParams.FloatSinkRate * modifiers.FloatSinkRate;
+            PitchRate = baseParams.PitchRate * modifiers.PitchRate;
+            StrafeRate = baseParams.StrafeRate * modifiers.StrafeRate;
+            CeilingForce = baseParams.CeilingForce * modifiers.CeilingForce;
+            CeilingCorrect = baseParams.CeilingCorrect * modifiers.CeilingCorrect;
+            FireInterval = baseParams.FireInterval * modifiers.FireInterval;
+            MineInterval = baseParams.MineInterval * modifiers.MineInterval;
+            IdentifiedTime = baseParams.IdentifiedTime * modifiers.IdentifiedTime;
+            PingRange = baseParams.PingRange * modifiers.PingRange;
+            PingTime = baseParams.PingTime * modifiers.PingTime;
+        }
     }
 }

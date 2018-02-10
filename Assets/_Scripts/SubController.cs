@@ -19,26 +19,29 @@ namespace Depth
         /// <summary>Max pitch in degrees away from center</summary>
 
         private SubParameters parameters;
+
+        private SubModifiers modifiers;
         private Rigidbody body;
         private Sub sub;
         private GameObject modelObject;
 
-        private void SetBubbles(bool? forward, bool? backward)
-        {
-            if (parameters.Bubbles != null && forward != null)
-                parameters.Bubbles.Emitting = forward.Value;
-
-            if (parameters.BackwardBubbles != null && backward != null)
-                parameters.BackwardBubbles.Emitting = backward.Value;
-        }
-
         public void Awake()
         {
-            parameters = GetComponentInChildren<SubParameters>();
+            modifiers = GetComponentInChildren<SubModifiers>();
+            parameters = modifiers.GetParameters();
             body = GetComponent<Rigidbody>();
             sub = GetComponent<Sub>();
             modelObject = GetComponentInChildren<SubBody>().gameObject;
             SetBubbles(false, false);
+        }
+
+        private void SetBubbles(bool? forward, bool? backward)
+        {
+            if (modifiers.Bubbles != null && forward != null)
+                modifiers.Bubbles.Emitting = forward.Value;
+
+            if (modifiers.BackwardBubbles != null && backward != null)
+                modifiers.BackwardBubbles.Emitting = backward.Value;
         }
 
         public void FixedUpdate()

@@ -16,7 +16,6 @@ namespace Depth
 
         public FormattableText TimeLeftText;
         public FormattableText CountdownText;
-        public GameObject[] VictorySplashes;
         public float GameLength = 60;
         public float WinnerDuration = 10;
 
@@ -33,7 +32,9 @@ namespace Depth
 
         public void Start()
         {
-            foreach (var splash in VictorySplashes)
+            var subs = SubManager.Instance.Subs;
+
+            foreach (var splash in subs.Select(x => x.Panel.WonPanel.gameObject))
             {
                 splash.SetActive(false);
             }
@@ -100,10 +101,10 @@ namespace Depth
             }
             else
             {
-                var winners = SubManager.Instance.Subs.Where(x => x.Kills == winningScore).Select(x => x.Player);
+                var winners = SubManager.Instance.Subs.Where(x => x.Kills == winningScore);
                 foreach (var winner in winners)
                 {
-                    VictorySplashes[winner].SetActive(true);
+                    winner.Panel.WonPanel.gameObject.SetActive(true);
                 }
             }
 

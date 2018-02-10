@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4168469796896170}
   - component: {fileID: 114098999047629376}
-  - component: {fileID: 114206645893750334}
+  - component: {fileID: 114633792330611786}
   m_Layer: 0
   m_Name: Sub D1
   m_TagString: Untagged
@@ -1084,34 +1084,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EmittingAtStart: 0
---- !u!114 &114206645893750334
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1323596891614702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3590cd57e3052bc4786cd5a00a3b3661, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Bubbles: {fileID: 114171024203434694}
-  BackwardBubbles: {fileID: 114189677365688032}
-  MaxRaiseLowerSpeed: 7
-  MaxTurnRate: 1
-  MaxSpeed: 1000
-  MaxStrafe: 10
-  MaxPitch: 10
-  AccelerationRate: 5000
-  BrakeRate: 1
-  TurnAcceleration: 150
-  FloatSinkRate: 5000
-  PitchRate: 70
-  StrafeRate: 1000
-  CeilingForce: 100
-  CeilingCorrect: 1
-  FireInterval: 1
-  MineInterval: 10
 --- !u!114 &114349859679606194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1123,6 +1095,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dde4acf0383c43fe87806ec165fbc8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114633792330611786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1323596891614702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c29ba502ee7a54fbe714439c08dcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bubbles: {fileID: 114171024203434694}
+  BackwardBubbles: {fileID: 114189677365688032}
+  MaxRaiseLowerSpeed: 1
+  MaxTurnRate: 1
+  MaxSpeed: 1
+  MaxStrafe: 1
+  MaxPitch: 1
+  AccelerationRate: 1
+  BrakeRate: 1
+  TurnAcceleration: 1
+  FloatSinkRate: 1
+  PitchRate: 1
+  StrafeRate: 1
+  CeilingForce: 1
+  CeilingCorrect: 1
+  FireInterval: 1
+  MineInterval: 1
 --- !u!114 &114657028712939748
 MonoBehaviour:
   m_ObjectHideFlags: 1

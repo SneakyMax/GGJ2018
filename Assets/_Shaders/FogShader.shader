@@ -78,8 +78,9 @@
 				float4 col_identified = tex2D(_IdentifiedTex, i.uv);
 				// Float depth of the identified object (stored in render texture)
 				float identified_depth_float = tex2D(_IdentifiedDepth, i.uv);
-				float slightly_closer_identified = ZBufferDepth(LinearEyeDepth(identified_depth_float) - 0.5);
-				
+				//float slightly_closer_identified = ZBufferDepth(LinearEyeDepth(identified_depth_float) - 0.5);
+				float slightly_closer_identified = identified_depth_float;
+
 				// Float depth of the fragment
 				float depth_float = tex2D(_CameraDepthTexture, i.uv);
 				// Depth of the fragment in meters

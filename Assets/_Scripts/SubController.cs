@@ -54,7 +54,6 @@ namespace Depth
             if (body.isKinematic)
                 body.isKinematic = false;
 
-
             var forward = transform.forward;
 
             var totalForce = new Vector3();

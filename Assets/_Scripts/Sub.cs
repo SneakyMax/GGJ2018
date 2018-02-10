@@ -30,6 +30,8 @@ namespace Depth
         public GameObject ExplosionPrefab;
         public float RespawnDelay = 3;
 
+        private float maxSubHeight;
+
         public void Awake()
         {
             Taggable = GetComponent<Taggable>();
@@ -109,6 +111,8 @@ namespace Depth
 
             transform.position = SpawnPoint.transform.position;
             transform.rotation = SpawnPoint.transform.rotation;
+
+            maxSubHeight = GameObject.FindGameObjectWithTag("Ceiling").transform.position.y;
         }
 
         public void Update()
@@ -117,6 +121,12 @@ namespace Depth
 
             AimReticule.anchoredPosition = Helpers.CameraSpaceToMultiplyerSpace(
                 Helpers.WorldPointToScreenSpace(transform.position + (transform.forward * AimDistance), SubCamera));
+        }
+
+        public void FixedUpdate()
+        {
+            if (transform.position.y > maxSubHeight)
+                GetComponent<SubController>().HitCeiling();
         }
 
         public void OnDestroy()
@@ -130,11 +140,6 @@ namespace Depth
             if (otherSub != null)
             {
                 BlowUp(otherSub.Player);
-            }
-
-            if (collision.gameObject.CompareTag("Ceiling"))
-            {
-                GetComponent<SubController>().HitCeiling();
             }
         }
     }

@@ -137,6 +137,16 @@ namespace Depth
 
         public void OnCollisionEnter(Collision collision)
         {
+            Collided(collision);
+        }
+
+        public void OnCollisionStay(Collision collision)
+        {
+            Collided(collision);
+        }
+
+        private void Collided(Collision collision)
+        {
             if (!armed)
                 return;
 

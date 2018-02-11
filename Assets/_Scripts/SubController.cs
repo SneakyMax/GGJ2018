@@ -102,7 +102,7 @@ namespace Depth
                     body.AddTorque(backFactor * TurnFactor * Vector3.up * parameters.TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
                 }
             }
-            else if ( body.angularVelocity.y > parameters.MaxTurnRate / 4.0f)
+            else if (body.angularVelocity.y > parameters.MaxTurnRate / 4.0f)
             {
                 body.AddTorque(Vector3.up * -Mathf.Sign(body.angularVelocity.y) * parameters.TurnAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
@@ -229,7 +229,7 @@ namespace Depth
                 RaiseState = RaiseState.Centering;
             }
 
-            PitchFactor = state.ThumbSticks.Right.Y;
+            PitchFactor = -state.ThumbSticks.Right.Y;
 
             var strafe = state.ThumbSticks.Left.X;
             if (strafe < -0.1f)

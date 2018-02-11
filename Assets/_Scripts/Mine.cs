@@ -53,7 +53,7 @@ namespace Depth
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);
             Destroy(gameObject);
 
-            SoundManager.PlaySound("explosion_medium - far");
+            SoundManager.PlaySound("explosion_medium-far");
         }
 
         public void FixedUpdate()
@@ -95,8 +95,7 @@ namespace Depth
                 previousTarget.LockedOff(this);
             }
 
-            if (target != null && target != previousTarget 
-                && Vector3.Distance(target.transform.position, transform.position) < MinRangeToShowTargeted)
+            if (target != null && Vector3.Distance(target.transform.position, transform.position) < MinRangeToShowTargeted)
             {
                 target.IsLockedOn(this);
             }

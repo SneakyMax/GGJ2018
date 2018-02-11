@@ -1,20 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Depth
 {
     [RequireComponent(typeof(ParticleSystem))]
     public class OneShotParticles : MonoBehaviour
     {
-        private ParticleSystem particles;
+        private ParticleSystem[] particles;
 
         public void Start()
         {
-            particles = GetComponent<ParticleSystem>();
+            particles = GetComponentsInChildren<ParticleSystem>();
         }
 
         public void Update()
         {
-            if (particles.IsAlive() == false)
+            if (particles.All(x => x.IsAlive() == false))
             {
                 Destroy(gameObject);
             }

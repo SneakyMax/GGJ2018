@@ -27,7 +27,7 @@ namespace Depth
             if (!GameplayManager.Instance.AllowInput)
                 return;
 
-            if (sub.InputState.Buttons.X == ButtonState.Pressed && !isPinging)
+            if (sub.InputState.Buttons.A == ButtonState.Pressed && !isPinging)
             {
                 StartPing();
             }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using Depth.UI;
 using UnityEngine;
 using XInputDotNetPure;
@@ -17,6 +18,7 @@ namespace Depth
         public SubModifiers Modifiers { get; private set; }
         public SubParameters Parameters { get; private set; }
         public int InputPlayer { get; set; }
+        public Ability[] Abilities { get; private set; }
 
         public PlayerCam Cam;
 
@@ -31,7 +33,6 @@ namespace Depth
         public PlayerPanel Panel;
 
         private float maxSubHeight;
-        private float playerMod;
 
         public void Awake()
         {
@@ -47,6 +48,7 @@ namespace Depth
             Body = GetComponentInChildren<SubBody>();
             Modifiers = GetComponentInChildren<SubModifiers>();
             Parameters = Modifiers.GetParameters();
+            Abilities = GetComponentsInChildren<Ability>();
 
             InputPlayer = Player;
 
@@ -61,6 +63,11 @@ namespace Depth
             GameplayManager.Instance.GameStarted += OnGameStarted;
             SubManager.Instance.Subs.Add(this);
             Respawn();
+        }
+
+        public bool HasAbility(string ability)
+        {
+            return Abilities != null && Abilities.Any(x => x.Name == ability);
         }
 
         private void OnLockedOff(CanBeLockedOnTo canBeLockedOnTo)

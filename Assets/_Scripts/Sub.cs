@@ -8,7 +8,7 @@ namespace Depth
     public class Sub : MonoBehaviour
     {
         public bool IsDestroyed { get; private set; }
-        public TorpedoTargetable Targetable { get; set; }
+        public CanBeLockedOnTo Targetable { get; set; }
         public Taggable Taggable { get; private set; }
         public SubBody Body { get; private set; }
         public GamePadState InputState { get; private set; }
@@ -16,6 +16,7 @@ namespace Depth
         public Camera SubCamera { get; private set; }
         public SubModifiers Modifiers { get; private set; }
         public SubParameters Parameters { get; private set; }
+        public int InputPlayer { get; set; }
 
         public PlayerCam Cam;
 
@@ -30,18 +31,24 @@ namespace Depth
         public PlayerPanel Panel;
 
         private float maxSubHeight;
+        private float playerMod;
 
         public void Awake()
         {
             IsDestroyed = true;
             Taggable = GetComponent<Taggable>();
-            Targetable = GetComponent<TorpedoTargetable>();
+            Targetable = GetComponent<CanBeLockedOnTo>();
 
             Targetable.OnHitByTorpedo += BlowUp;
             Targetable.OnHitByMine += BlowUp;
+            Targetable.OnLockedOn += OnLockedOn;
+            Targetable.OnLockedOff += OnLockedOff;
+
             Body = GetComponentInChildren<SubBody>();
             Modifiers = GetComponentInChildren<SubModifiers>();
             Parameters = Modifiers.GetParameters();
+
+            InputPlayer = Player;
 
             SubCamera = Cam.GetComponent<Camera>();
             IsDestroyed = true;
@@ -54,6 +61,19 @@ namespace Depth
             GameplayManager.Instance.GameStarted += OnGameStarted;
             SubManager.Instance.Subs.Add(this);
             Respawn();
+        }
+
+        private void OnLockedOff(CanBeLockedOnTo canBeLockedOnTo)
+        {
+            if (canBeLockedOnTo.CurrentLocks == 0)
+            {
+                Panel.LockedOnWarning.Hide();
+            }
+        }
+
+        private void OnLockedOn(ICanLockOn canLockOn)
+        {
+            Panel.LockedOnWarning.Show();
         }
 
         private void OnGameStarted()
@@ -122,8 +142,8 @@ namespace Depth
 
         public void Update()
         {
-            InputState = GamePad.GetState((PlayerIndex)Player);
-
+            InputState = GamePad.GetState((PlayerIndex)InputPlayer);
+            
             AimReticule.anchoredPosition = Helpers.CameraSpaceToMultiplyerSpace(
                 Helpers.WorldPointToScreenSpace(transform.position + (transform.forward * AimDistance), SubCamera));
         }

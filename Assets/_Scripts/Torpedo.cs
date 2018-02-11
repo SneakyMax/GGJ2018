@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Depth
 {
-    public class Torpedo : MonoBehaviour
+    public class Torpedo : MonoBehaviour, ICanLockOn
     {
         public float InitialSpeed = 1;
 
@@ -29,7 +29,7 @@ namespace Depth
 
         private Rigidbody body;
 
-        public TorpedoTargetable Target;
+        public CanBeLockedOnTo Target;
 
         private float speed;
         private Vector3 direction;
@@ -72,11 +72,17 @@ namespace Depth
 
         public void Update()
         {
+            if (Target != null && Target.IsDestroyed)
+            {
+                Target.LockedOff(this);
+                Target = null;
+            }
+
             if (Target == null)
             {
                 var forward = transform.forward;
 
-                var candidates = new List<TorpedoTargetable>();
+                var candidates = new List<CanBeLockedOnTo>();
 
                 foreach (var targetable in SubManager.Instance.Targetable)
                 {
@@ -88,7 +94,7 @@ namespace Depth
                     RaycastHit hit;
                     Physics.Raycast(new Ray(transform.position, vectorTorpToTargetable), out hit);
 
-                    var hitTargetable = hit.collider.gameObject.GetComponentInParent<TorpedoTargetable>();
+                    var hitTargetable = hit.collider.gameObject.GetComponentInParent<CanBeLockedOnTo>();
 
                     if (hitTargetable == null || hitTargetable != targetable)
                         continue;
@@ -108,7 +114,7 @@ namespace Depth
 
                 var closest = candidates.OrderBy(x => Vector3.Distance(transform.position, x.transform.position)).First();
                 Target = closest;
-                // Debug.Log(String.Format("Torpedo targeting {0}", target.gameObject.name));
+                Target.IsLockedOn(this);
             }
             else
             {
@@ -134,7 +140,7 @@ namespace Depth
             if (!armed)
                 return;
 
-            var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
+            var targetable = collision.collider.GetComponentInParent<CanBeLockedOnTo>();
             if (targetable != null)
                 targetable.HitByTorpedo(this);
 
@@ -147,11 +153,18 @@ namespace Depth
             //   loop for each player,
             //   check the distance to the torpedo or mine
             // attenuate the sound of the explosion: 100% if direct hit to player, fade out to 10% if more than half arena away
-
             SoundManager.PlaySound("explosion_far1");
 
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);
             Destroy(gameObject);
         }
+
+        private void OnDestroy()
+        {
+            if (Target != null)
+                Target.LockedOff(this);
+        }
+
+        public GameObject GameObject { get { return gameObject; } }
     }
 }

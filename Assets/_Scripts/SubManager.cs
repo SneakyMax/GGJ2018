@@ -10,12 +10,12 @@ namespace Depth
 
         public IList<Sub> Subs { get; private set; }
 
-        public IList<TorpedoTargetable> Targetable { get; private set; }
+        public IList<CanBeLockedOnTo> Targetable { get; private set; }
 
         public SubManager()
         {
             Subs = new List<Sub>();
-            Targetable = new List<TorpedoTargetable>();
+            Targetable = new List<CanBeLockedOnTo>();
         }
 
         public void Awake()

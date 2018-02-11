@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Depth
 {
-    public class Mine : MonoBehaviour
+    public class Mine : MonoBehaviour, ICanLockOn
     {
         public Sub Parent { get; set; }
 
@@ -12,6 +12,10 @@ namespace Depth
         public float SeekAccel;
         public float MaxSpeed;
         public float ArmTime = 5;
+
+        public float MinRangeToShowTargeted = 15;
+
+        private CanBeLockedOnTo target;
 
         private bool armed;
         private Rigidbody body;
@@ -37,7 +41,7 @@ namespace Depth
             if (!armed)
                 return;
 
-            var targetable = collision.collider.GetComponentInParent<TorpedoTargetable>();
+            var targetable = collision.collider.GetComponentInParent<CanBeLockedOnTo>();
             if (targetable != null)
                 targetable.HitByMine(this);
 
@@ -54,20 +58,58 @@ namespace Depth
 
         public void FixedUpdate()
         {
-            if (armed == false)
+            if (!armed)
                 return;
 
-            var closestPlayer =
-                SubManager.Instance.Subs.OrderBy(x => Vector3.Distance(transform.position, x.transform.position))
-                    .FirstOrDefault();
+            if (target != null)
+            {
+                var toClosestPlayer = (target.transform.position - transform.position).normalized;
 
-            if (closestPlayer == null)
-                return;
-
-            var toClosestPlayer = (closestPlayer.transform.position - transform.position).normalized;
-
-            if ( body.velocity.magnitude < MaxSpeed)
-                body.AddForce(toClosestPlayer * SeekAccel, ForceMode.Acceleration);
+                if (body.velocity.magnitude < MaxSpeed)
+                    body.AddForce(toClosestPlayer * SeekAccel, ForceMode.Acceleration);
+            }
         }
+
+        public void Update()
+        {
+            if (target != null && target.IsDestroyed)
+            {
+                target.LockedOff(this);
+                target = null;
+            }
+
+            if (target != null && Vector3.Distance(target.transform.position, transform.position) > MinRangeToShowTargeted)
+            {
+                target.LockedOff(this);
+            }
+
+            if (!armed)
+                return;
+
+            var previousTarget = target;
+            target = SubManager.Instance.Targetable.OrderBy(x => Vector3.Distance(transform.position, x.transform.position))
+                .FirstOrDefault();
+
+            if (previousTarget != null && target != previousTarget)
+            {
+                previousTarget.LockedOff(this);
+            }
+
+            if (target != null && target != previousTarget 
+                && Vector3.Distance(target.transform.position, transform.position) < MinRangeToShowTargeted)
+            {
+                target.IsLockedOn(this);
+            }
+        }
+
+        public void OnDestroy()
+        {
+            if (target != null)
+            {
+                target.LockedOff(this);
+            }
+        }
+
+        public GameObject GameObject { get { return gameObject; } }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using XInputDotNetPure;
 
 namespace Depth
 {
@@ -24,6 +25,7 @@ namespace Depth
         public bool IsGameEnded { get; private set; }
         
         private float gameStartTime;
+        private GamePadState previousState;
         
         public void Awake()
         {
@@ -67,6 +69,16 @@ namespace Depth
 
         public void Update()
         {
+            var state = GamePad.GetState(0);
+            if (state.Buttons.Back == ButtonState.Pressed && previousState.Buttons.Back == ButtonState.Released)
+            {
+                foreach (var player in SubManager.Instance.Subs)
+                {
+                    player.InputPlayer = (player.InputPlayer + 1) % 4;
+                }
+            }
+            previousState = state;
+
             if (IsGameStarted && !IsGameEnded)
             {
                 var remaining = TimeSpan.FromSeconds(TimeRemaining);

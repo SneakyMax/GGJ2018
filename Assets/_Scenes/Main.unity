@@ -30056,7 +30056,7 @@ Prefab:
     - target: {fileID: 114538071089080106, guid: 2cb22c88799babb4a8660b56bad51e8b,
         type: 2}
       propertyPath: MinViewDistance
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2cb22c88799babb4a8660b56bad51e8b, type: 2}

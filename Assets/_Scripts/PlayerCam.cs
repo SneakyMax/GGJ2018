@@ -35,6 +35,8 @@ namespace Depth
 
             targetTexture = new RenderTexture(rtWidth, rtHeight, 24, RenderTextureFormat.ARGB32);
             thisCamera.targetTexture = targetTexture;
+
+            PingDist = -5000;
         }
 
         public void Start()
@@ -69,6 +71,11 @@ namespace Depth
             thisMaterial.SetFloat("_CurrentPingDist", PingDist);
             thisMaterial.SetTexture("_IdentifiedTex", identifiedTexture);
             thisMaterial.SetTexture("_IdentifiedDepth", identifiedDepthTexture);
+            var parameters = sub.Parameters;
+            thisMaterial.SetFloat("_GradientRange", parameters.GradientRange);
+            thisMaterial.SetFloat("_MinViewDist", parameters.MinViewDistance);
+            thisMaterial.SetFloat("_MinDistTransitionDist", parameters.MinDistTransisionDist);
+            thisMaterial.SetColor("_FogColor", parameters.FogColor);
 
             thisMaterial.SetPass(0);
             Helpers.FullscreenQuad();

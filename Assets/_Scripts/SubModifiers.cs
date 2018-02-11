@@ -64,6 +64,18 @@ namespace Depth
         [Range(0, 3)]
         public float PingRange = 1;
 
+        [Header("Ping")]
+        [Range(0, 3)]
+        public float GradientRange = 1;
+
+        [Range(0, 3)]
+        public float MinViewDistance = 1;
+
+        [Range(0, 3)]
+        public float MinDistTransisionDist = 1;
+
+        public Color FogColor = new Color(1,1,1,1);
+
         public SubParameters GetParameters()
         {
             return new SubParameters(this);

@@ -1,4 +1,6 @@
-﻿namespace Depth
+﻿using UnityEngine;
+
+namespace Depth
 {
     public class SubParameters
     {
@@ -21,6 +23,10 @@
         public float IdentifiedTime { get; private set; }
         public float PingRange { get; private set; }
         public float PingTime { get; private set; }
+        public float GradientRange { get; private set; }
+        public float MinViewDistance { get; private set; }
+        public float MinDistTransisionDist { get; private set; }
+        public Color FogColor { get; private set; }
 
         public SubParameters(SubModifiers modifiers)
         {
@@ -44,6 +50,10 @@
             IdentifiedTime = baseParams.IdentifiedTime * modifiers.IdentifiedTime;
             PingRange = baseParams.PingRange * modifiers.PingRange;
             PingTime = baseParams.PingTime * modifiers.PingTime;
+            GradientRange = baseParams.GradientRange * modifiers.GradientRange;
+            MinViewDistance = baseParams.MinViewDistance * modifiers.MinViewDistance;
+            MinDistTransisionDist = baseParams.MinDistTransisionDist * modifiers.MinDistTransisionDist;
+            FogColor = baseParams.FogColor * modifiers.FogColor;
         }
     }
 }

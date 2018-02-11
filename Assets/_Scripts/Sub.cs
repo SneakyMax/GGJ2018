@@ -62,6 +62,13 @@ namespace Depth
         {
             GameplayManager.Instance.GameStarted += OnGameStarted;
             SubManager.Instance.Subs.Add(this);
+
+            var ability = Abilities.FirstOrDefault();
+            if (ability != null)
+            {
+                Panel.AbilityIndicator.SetIcon(ability.Icon);
+            }
+
             Respawn();
         }
 
@@ -153,6 +160,8 @@ namespace Depth
             
             AimReticule.anchoredPosition = Helpers.CameraSpaceToMultiplyerSpace(
                 Helpers.WorldPointToScreenSpace(transform.position + (transform.forward * AimDistance), SubCamera));
+
+            Parameters = Modifiers.GetParameters();
         }
 
         public void FixedUpdate()

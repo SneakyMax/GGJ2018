@@ -62,7 +62,6 @@
 			float _CurrentPingDist;
 			float _MinViewDist;
 			float _MinDistTransitionDist;
-			float _IdentifiedOpacity;
 
 			// Gets a z buffer depth from a linear depth (inverse of LinearEyeDepth)
 			inline float ZBufferDepth(float eyeDepth)

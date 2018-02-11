@@ -2,7 +2,7 @@
 
 namespace Depth
 {
-    public class Ability : MonoBehaviour
+    public abstract class Ability : MonoBehaviour
     {
         public Sprite Icon;
 

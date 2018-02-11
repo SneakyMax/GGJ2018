@@ -29,6 +29,12 @@ namespace Depth
         public float IdentifiedTime = 3;
         public float PingTime = 3.5f;
         public float PingRange = 200;
+        
+        [Header("Ping")]
+        public float GradientRange = 25;
+        public float MinViewDistance = 25;
+        public float MinDistTransisionDist = 10;
+        public Color FogColor = new Color(0, 0.06274f, 0.16078f, 1);
 
         public void Awake()
         {

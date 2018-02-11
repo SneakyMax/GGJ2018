@@ -11,6 +11,7 @@ namespace Depth.UI
         public WonPanel WonPanel { get; private set; }
         public TorpedoIndicator TorpedoIndicator { get; private set; }
         public LockedOnWarning LockedOnWarning { get; private set; }
+        public AbilityIndicator AbilityIndicator { get; private set; }
 
         public void Awake()
         {
@@ -21,6 +22,7 @@ namespace Depth.UI
             WonPanel = GetComponentInChildren<WonPanel>(true);
             TorpedoIndicator = GetComponentInChildren<TorpedoIndicator>(true);
             LockedOnWarning = GetComponentInChildren<LockedOnWarning>(true);
+            AbilityIndicator = GetComponentInChildren<AbilityIndicator>(true);
         }
     }
 }

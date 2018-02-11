@@ -11,7 +11,7 @@ namespace Depth
             get { return percent; }
             set
             {
-                percent = value; 
+                percent = Mathf.Clamp01(value); 
                 thisImage.material.SetFloat("_Percent", percent);
             }
         }

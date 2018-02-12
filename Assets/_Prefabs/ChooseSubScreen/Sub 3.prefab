@@ -467,7 +467,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c0203d60e9941459b70ed8c79de383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Blue
+  Name: The Hammerhead
+  Discription: This powerhouse beats can pack a hefty punch. A glass cannon, she can
+    fire a volley of torpedoes to take out an array of enemies, or set off an entire
+    minefield.  Or, if need be, distract the enemy and make an escape.
   SpinSpeed: 100
   InGameSub: {fileID: 1906540287590822, guid: 50ebeae4c371eb34a851d7d5b0a4614e, type: 2}
 --- !u!136 &136152892757644646

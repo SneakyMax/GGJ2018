@@ -123,6 +123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c0203d60e9941459b70ed8c79de383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Green
+  Name: The Leatherback
+  Discription: "This heavily armored sub, made from an ancient Atlantean metal, and
+    forged by the leading blacksmiths and engineers, is made to go to the deepest
+    depths.  Because of this, its armor is can really take a beating. However, with
+    her shield up, she isn\u2019t the most maneuverable."
   SpinSpeed: 100
   InGameSub: {fileID: 1610422733908446, guid: 88f155b46f7ee464ba3170c022eabbac, type: 2}

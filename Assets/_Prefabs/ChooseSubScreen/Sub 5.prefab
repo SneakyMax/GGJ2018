@@ -628,7 +628,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c0203d60e9941459b70ed8c79de383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Yellow
+  Name: The Goldfish
+  Discription: Designed for treasure hunting, this vessel scuttles along the ocean
+    floor at a quick and whippy pace.  On the cutting-edge of Atlantean material technology,
+    she is capable of compressing inter-molecular spaces, and can shrink and slip
+    into even the smallest of nooks and crannies.  This golden beauty can explore
+    just about anywhere.
   SpinSpeed: 100
   InGameSub: {fileID: 1266424407959402, guid: bc72fc81baec2e742ac88ce11b9fdc6d, type: 2}
 --- !u!136 &136192097470249620

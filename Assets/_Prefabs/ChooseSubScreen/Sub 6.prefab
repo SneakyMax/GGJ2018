@@ -195,7 +195,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c0203d60e9941459b70ed8c79de383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Orange
+  Name: The Sting Ray
+  Discription: 'Close to ground or skimming through trenches, this sub is designed
+    to gain momentum as it moves, going from a puttering pace to a blinding speed,
+    making this dynamic craft a little hard to handle.  With its flat structure it
+    can settle into any environment and blend right in, rendering itself completely
+    invisible. '
   SpinSpeed: 100
   InGameSub: {fileID: 1266424407959402, guid: 751002ec9448f7d49bdd2cdd9021508b, type: 2}
 --- !u!136 &136231733729432272

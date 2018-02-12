@@ -7,6 +7,8 @@ namespace Depth.ChooseSubScreen
     {
         public string Name;
 
+        public string Discription;
+
         public float SpinSpeed;
 
         public GameObject InGameSub;

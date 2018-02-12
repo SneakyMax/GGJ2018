@@ -709,7 +709,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c0203d60e9941459b70ed8c79de383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Purple
+  Name: The Marlin
+  Discription: "Designed by Atlantis\u2019s top minds, this demon has a need for speed,
+    even at the cost of maneuverability.  Designed for smuggling, she can outrun even
+    the fastest official corvette. Her boost leaves a heavy trail of bubbles, blinding
+    those in her wake. The unfortunate downside is that the boost is loud enough to
+    attract unwanted attention."
   SpinSpeed: 100
   InGameSub: {fileID: 1323596891614702, guid: 3f26dbf03e81c9c4cbdf56d41be8ca28, type: 2}
 --- !u!136 &136828635625942820

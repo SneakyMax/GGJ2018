@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23079837383000222}
   - component: {fileID: 114154809039698560}
   - component: {fileID: 135518615991674626}
+  - component: {fileID: 114315965584479252}
   m_Layer: 0
   m_Name: PowerUp_ImprovedAmmo
   m_TagString: Untagged
@@ -96,6 +97,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TagMaterial: {fileID: 2100000, guid: 0bee7f013fcf2b240afa252699cc4684, type: 2}
+--- !u!114 &114315965584479252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1202101359114016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163cc1f50c3afd64dbf7b8aa845769e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Time: 30
+  Name: Improved Ammo
 --- !u!135 &135518615991674626
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Depth.Assets._Scripts;
 using Depth.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,14 +35,17 @@ namespace Depth
         public RectTransform AimReticule;
         public GameObject ExplosionPrefab;
         public float RespawnDelay = 3;
+        public GameObject NotificationTextPrefab;
 
         public PlayerPanel Panel;
 
         private float maxSubHeight;
         private Rigidbody thisRigidbody;
-
+        private IList<string> powerups;
+ 
         public void Awake()
         {
+            powerups = new List<string>();
             IsDestroyed = true;
             Taggable = GetComponent<Taggable>();
             Targetable = GetComponent<CanBeLockedOnTo>();
@@ -51,7 +57,7 @@ namespace Depth
 
             Body = GetComponentInChildren<SubBody>();
             Modifiers = GetComponentInChildren<SubModifiers>();
-            Parameters = Modifiers.GetParameters();
+            Parameters = Modifiers.GetParameters(1, 1);
             Abilities = GetComponentsInChildren<Ability>();
 
             InputPlayer = Player;
@@ -80,6 +86,11 @@ namespace Depth
         public bool HasAbility(string ability)
         {
             return Abilities != null && Abilities.Any(x => x.Name == ability);
+        }
+
+        public bool HasPowerup(string powerup)
+        {
+            return powerups.Any(x => x == powerup);
         }
 
         private void OnLockedOff(CanBeLockedOnTo canBeLockedOnTo)
@@ -131,6 +142,11 @@ namespace Depth
                 return;
             }
 
+            if (HasPowerup("Shield"))
+            {
+                return;
+            }
+
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 
             GetComponentInChildren<SubBody>(true).gameObject.SetActive(false);
@@ -164,6 +180,20 @@ namespace Depth
             Panel.DeadPanel.gameObject.SetActive(false);
         }
 
+        public void GotPowerup(Powerup powerup)
+        {
+            var textInstance = Instantiate(NotificationTextPrefab, Panel.transform, false);
+            textInstance.GetComponent<FormattableText>().Format(String.Format("{0} ({1}s)", powerup.Name, powerup.Time));
+            StartCoroutine(DisablePowerupAfterTime(powerup));
+            powerups.Add(powerup.name);
+        }
+
+        private IEnumerator DisablePowerupAfterTime(Powerup powerup)
+        {
+            yield return new WaitForSeconds(powerup.Time);
+            powerups.Remove(powerup.Name);
+        }
+
         public void Update()
         {
             InputState = GamePad.GetState((PlayerIndex)InputPlayer);
@@ -171,9 +201,9 @@ namespace Depth
             AimReticule.anchoredPosition = Helpers.CameraSpaceToMultiplyerSpace(
                 Helpers.WorldPointToScreenSpace(transform.position + (transform.forward * AimDistance), SubCamera));
 
-            Parameters = Modifiers.GetParameters();
+            Parameters = Modifiers.GetParameters(HasPowerup("Boost") ? 2 : 1, HasPowerup("Improved Ammo") ? 0.5f : 1);
 
-            IsHidden = IsForceHidden || thisRigidbody.velocity.magnitude < 1;
+            IsHidden = IsForceHidden || thisRigidbody.velocity.magnitude < 1 || HasPowerup("Cloak");
             Panel.HiddenIndicator.gameObject.SetActive(IsHidden);
         }
 

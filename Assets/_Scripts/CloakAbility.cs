@@ -11,6 +11,8 @@ namespace Depth
         private float lastCloakTime;
         private bool isCloaked;
 
+        public GameObject NotificationTextPrefab;
+
         public void Awake()
         {
             sub = GetComponentInParent<Sub>();
@@ -35,6 +37,8 @@ namespace Depth
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
                 isCloaked = true;
+                var textInstance = Instantiate(NotificationTextPrefab, sub.Panel.transform, false);
+                textInstance.GetComponent<FormattableText>().Format("Cloak");
                 lastCloakTime = Time.time;
             }
 

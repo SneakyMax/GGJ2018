@@ -16,19 +16,16 @@ namespace Depth
         public float AccelFactor;
         public float PitchFactor;
 
-        /// <summary>Max pitch in degrees away from center</summary>
-
-        private SubParameters parameters;
-
         private SubModifiers modifiers;
         private Rigidbody body;
         private Sub sub;
         private GameObject modelObject;
 
+        private SubParameters parameters { get { return sub.Parameters; } }
+
         public void Awake()
         {
             modifiers = GetComponentInChildren<SubModifiers>();
-            parameters = modifiers.GetParameters();
             body = GetComponent<Rigidbody>();
             sub = GetComponent<Sub>();
             modelObject = GetComponentInChildren<SubBody>().gameObject;

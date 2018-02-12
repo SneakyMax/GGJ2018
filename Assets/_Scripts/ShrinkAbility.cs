@@ -5,8 +5,8 @@ namespace Depth
 {
     public class ShrinkAbility : Ability
     {
-      
 
+        public GameObject NotificationTextPrefab;
  
         public enum ScaleState {Normal, Shrinking, Shrunk, Unshrinking};
         private Sub sub;
@@ -49,7 +49,8 @@ namespace Depth
 
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
-
+                var textInstance = Instantiate(NotificationTextPrefab, sub.Panel.transform, false);
+                textInstance.GetComponent<FormattableText>().Format("Shrink");
                 lastShrinkTime = Time.time;
                 isShrunk = ScaleState.Shrinking;
                 shrinkTimer = 0;

@@ -14,6 +14,7 @@ namespace Depth.UI
         public LockedOnWarning LockedOnWarning { get; private set; }
         public AbilityIndicator AbilityIndicator { get; private set; }
         public HiddenIndicator HiddenIndicator { get; private set; }
+        public RectTransform Middle { get; private set; }
 
         public void Awake()
         {
@@ -26,6 +27,7 @@ namespace Depth.UI
             LockedOnWarning = GetComponentInChildren<LockedOnWarning>(true);
             AbilityIndicator = GetComponentInChildren<AbilityIndicator>(true);
             HiddenIndicator = GetComponentInChildren<HiddenIndicator>(true);
+            Middle = (RectTransform)transform.Find("Middle");
         }
     }
 }

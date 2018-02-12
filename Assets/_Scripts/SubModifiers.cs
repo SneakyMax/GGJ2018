@@ -76,9 +76,9 @@ namespace Depth
 
         public Color FogColor = new Color(1,1,1,1);
 
-        public SubParameters GetParameters()
+        public SubParameters GetParameters(float movementModifier, float torpedoModifier)
         {
-            return new SubParameters(this);
+            return new SubParameters(this, movementModifier, torpedoModifier);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Depth
 {
     public class ShieldAbility : Ability
     {
+        public GameObject NotificationTextPrefab;
         public MeshRenderer ShieldMesh;
 
         public float ShieldTime = 1;
@@ -40,6 +41,8 @@ namespace Depth
 
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
+                var textInstance = Instantiate(NotificationTextPrefab, sub.Panel.transform, false);
+                textInstance.GetComponent<FormattableText>().Format("Shield");
                 isShielding = true;
                 lastShieldTime = Time.time;
             }

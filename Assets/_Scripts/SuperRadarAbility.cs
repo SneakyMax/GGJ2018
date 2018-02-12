@@ -5,6 +5,7 @@ namespace Depth
 {
     public class SuperRadarAbility : Ability
     {
+        public GameObject NotificationTextPrefab;
         public float TagTime = 10;
 
         private Sub sub;
@@ -25,6 +26,9 @@ namespace Depth
 
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
+                var textInstance = Instantiate(NotificationTextPrefab, sub.Panel.transform, false);
+                textInstance.GetComponent<FormattableText>().Format("Super Radar");
+
                 foreach (var taggable in TaggableManager.Instance.AllTaggable)
                 {
                     if (taggable == sub.Taggable)

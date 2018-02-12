@@ -12,12 +12,15 @@ namespace Depth
         public float ShieldAnimateSpeed = 1;
 
         private Sub sub;
-        private float lastBoostTime;
+        private float lastShieldTime;
         private bool isShielding;
+
+        public bool IsActive { get { return isShielding; } }
 
         public void Awake()
         {
             sub = GetComponentInParent<Sub>();
+            lastShieldTime = -500;
         }
 
         public void Update()
@@ -25,10 +28,10 @@ namespace Depth
             if (GameplayManager.Instance.AllowInput == false)
                 return;
 
-            var percentCooledDown = (Time.time - lastBoostTime) / Cooldown;
+            var percentCooledDown = (Time.time - lastShieldTime) / Cooldown;
             sub.Panel.AbilityIndicator.Radial.Percent = 1.0f - percentCooledDown;
 
-            var percentShielded = (Time.time - lastBoostTime) / ShieldTime;
+            var percentShielded = (Time.time - lastShieldTime) / ShieldTime;
 
             if (percentShielded >= 1)
             {
@@ -38,7 +41,7 @@ namespace Depth
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
                 isShielding = true;
-                lastBoostTime = Time.time;
+                lastShieldTime = Time.time;
             }
 
             ShieldMesh.enabled = isShielding;

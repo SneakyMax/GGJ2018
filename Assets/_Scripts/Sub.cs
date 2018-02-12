@@ -21,6 +21,7 @@ namespace Depth
         public int InputPlayer { get; set; }
         public Ability[] Abilities { get; private set; }
         public bool IsHidden { get; private set; }
+        public bool IsForceHidden { get; set; }
 
         public PlayerCam Cam;
 
@@ -125,6 +126,11 @@ namespace Depth
             if (IsDestroyed)
                 return;
 
+            if (HasAbility("Shield") && GetComponentInChildren<ShieldAbility>().IsActive)
+            {
+                return;
+            }
+
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 
             GetComponentInChildren<SubBody>(true).gameObject.SetActive(false);
@@ -167,7 +173,7 @@ namespace Depth
 
             Parameters = Modifiers.GetParameters();
 
-            IsHidden = thisRigidbody.velocity.magnitude < 1;
+            IsHidden = IsForceHidden || thisRigidbody.velocity.magnitude < 1;
             Panel.HiddenIndicator.gameObject.SetActive(IsHidden);
         }
 

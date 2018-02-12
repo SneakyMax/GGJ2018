@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 4303947065662282}
   - component: {fileID: 114520690372372286}
   - component: {fileID: 114931452813206918}
+  - component: {fileID: 114253801526711932}
   m_Layer: 0
   m_Name: Sub F1
   m_TagString: Untagged
@@ -420,6 +421,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dde4acf0383c43fe87806ec165fbc8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114253801526711932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266424407959402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b750f745b96074d8eebaff590923d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 0}
+  Cooldown: 30
+  Name: Cloak
+  CloakTime: 10
 --- !u!114 &114310470447388690
 MonoBehaviour:
   m_ObjectHideFlags: 1

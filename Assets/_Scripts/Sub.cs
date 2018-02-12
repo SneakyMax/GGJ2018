@@ -182,10 +182,11 @@ namespace Depth
 
         public void GotPowerup(Powerup powerup)
         {
+            SoundManager.PlaySound("pickup_ability");
             var textInstance = Instantiate(NotificationTextPrefab, Panel.transform, false);
             textInstance.GetComponent<FormattableText>().Format(String.Format("{0} ({1}s)", powerup.Name, powerup.Time));
             StartCoroutine(DisablePowerupAfterTime(powerup));
-            powerups.Add(powerup.name);
+            powerups.Add(powerup.Name);
         }
 
         private IEnumerator DisablePowerupAfterTime(Powerup powerup)

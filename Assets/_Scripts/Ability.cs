@@ -9,5 +9,7 @@ namespace Depth
         public float Cooldown;
 
         public string Name;
+
+        public string SoundName;
     }
 }

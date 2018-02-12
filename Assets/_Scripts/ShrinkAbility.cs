@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using XInputDotNetPure;
 
 namespace Depth
@@ -49,6 +50,8 @@ namespace Depth
 
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
+                if (!String.IsNullOrEmpty(SoundName))
+                    SoundManager.PlaySound(SoundName);
                 var textInstance = Instantiate(NotificationTextPrefab, sub.Panel.transform, false);
                 textInstance.GetComponent<FormattableText>().Format("Shrink");
                 lastShrinkTime = Time.time;

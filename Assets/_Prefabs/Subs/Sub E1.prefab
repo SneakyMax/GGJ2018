@@ -915,6 +915,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: e7e9d92d17344ab4bbe409763e457a8d, type: 3}
   Cooldown: 25
   Name: Shrink
+  SoundName: shrink_ability
   NotificationTextPrefab: {fileID: 1710567625885462, guid: dc3a58003dc1a9b4ab6190889dcf0a69,
     type: 2}
   shrinkSize: 0.2

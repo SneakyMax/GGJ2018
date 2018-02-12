@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Depth
 {
@@ -14,6 +15,12 @@ namespace Depth
         public void Awake()
         {
             Instance = this;
+
+            if (PlayerSubChoices.Instance == null)
+            {
+                SceneManager.LoadScene(1);
+                return;
+            }
         }
 
     }

@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 4858165459234940}
   - component: {fileID: 114737455530275604}
   - component: {fileID: 114538071089080106}
+  - component: {fileID: 114937248708903120}
   m_Layer: 0
   m_Name: Sub A1
   m_TagString: Untagged
@@ -529,6 +530,10 @@ MonoBehaviour:
   IdentifiedTime: 1
   PingTime: 1
   PingRange: 1
+  GradientRange: 1
+  MinViewDistance: 1
+  MinDistTransisionDist: 1
+  FogColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &114737455530275604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -553,6 +558,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1683cfecd968f6341b7c8060cbba9d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114937248708903120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1557720911321380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f670da4769b6fc148b94a6296aa51b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: eb5f6e2757c821940b69cf1456f7865a, type: 3}
+  Cooldown: 10
+  Name: Boost
+  BoostParticles: {fileID: 0}
+  BoostForce: 62.5
+  BoostTime: 2
 --- !u!198 &198023261537662712
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -14,6 +14,7 @@ namespace Depth.ChooseSubScreen
         public int MainLevelIndex;
         public SubInfo[] Subs;
         public GameObject[] PressStarts;
+        public GameObject Loading;
 
         public Image FadeOverlay;
         public float FadeTime = 0.75f;
@@ -45,7 +46,7 @@ namespace Depth.ChooseSubScreen
 
         public void Update()
         {
-            Join();
+            // Join();
             ChooseSub();
             CheckStart();
         }
@@ -67,9 +68,19 @@ namespace Depth.ChooseSubScreen
 
         private IEnumerator StartStarting()
         {
+            var choices = PlayerSubChoices.Instance;
+            for (var player = 0; player < 4; player++)
+            {
+                choices.Set(player, currentSubInfos[player]);
+            }
+
             FadeOverlay.DOFade(1, FadeTime);
             yield return new WaitForSeconds(FadeTime);
-            SceneManager.LoadScene(MainLevelIndex);
+            var asyncLoad = SceneManager.LoadSceneAsync(MainLevelIndex, LoadSceneMode.Single);
+            asyncLoad.allowSceneActivation = true;
+
+            Loading.SetActive(true);
+            yield return asyncLoad;
         }
 
         private void Join()

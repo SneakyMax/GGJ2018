@@ -125,3 +125,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Red
   SpinSpeed: 100
+  InGameSub: {fileID: 1557720911321380, guid: 2cb22c88799babb4a8660b56bad51e8b, type: 2}

@@ -121,8 +121,12 @@ namespace Depth
             }
 
             yield return new WaitForSeconds(WinnerDuration);
+            BackToChooseSub();
+        }
 
-            ReloadGame();
+        private static void BackToChooseSub()
+        {
+            SceneManager.LoadScene(1);
         }
 
         private static void ReloadGame()

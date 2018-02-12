@@ -9,5 +9,8 @@ EditorBuildSettings:
     path: Assets/_Scenes/Title.unity
     guid: f89cb4bc3eee3824ea47171003f48b77
   - enabled: 1
+    path: Assets/_Scenes/Choose Subs.unity
+    guid: 86f332f87abc2394ab69139ab14c5a2b
+  - enabled: 1
     path: Assets/_Scenes/Main.unity
     guid: be0de0fce4270a1468906ae44b77a2ff

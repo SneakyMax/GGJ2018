@@ -65,6 +65,7 @@ namespace Depth
                         if (hasTagged.Contains(taggable) == false)
                         {
                             TaggableManager.Instance.Tag(taggable, sub.Player, sub.Parameters.IdentifiedTime);
+                            SoundManager.PlaySound("target_aquired", 0.25f);
                             hasTagged.Add(taggable);
                         }
                     }

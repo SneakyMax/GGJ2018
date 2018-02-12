@@ -9,6 +9,8 @@ namespace Depth.ChooseSubScreen
 
         public float SpinSpeed;
 
+        public GameObject InGameSub;
+
         public void Update()
         {
             transform.rotation = Quaternion.AngleAxis(SpinSpeed * Time.deltaTime, Vector3.up) * transform.rotation;

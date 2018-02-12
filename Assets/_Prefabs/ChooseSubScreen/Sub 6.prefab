@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4855948611934490}
   - component: {fileID: 114057747055323988}
   m_Layer: 0
-  m_Name: Sub 4
+  m_Name: Sub 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Purple
   SpinSpeed: 100
-  InGameSub: {fileID: 1323596891614702, guid: 3f26dbf03e81c9c4cbdf56d41be8ca28, type: 2}
+  InGameSub: {fileID: 0}
 --- !u!136 &136828635625942820
 CapsuleCollider:
   m_ObjectHideFlags: 1

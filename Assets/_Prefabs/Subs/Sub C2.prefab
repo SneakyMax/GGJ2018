@@ -925,6 +925,10 @@ MonoBehaviour:
   IdentifiedTime: 1
   PingTime: 1
   PingRange: 1
+  GradientRange: 1
+  MinViewDistance: 1
+  MinDistTransisionDist: 1
+  FogColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &114338285958056840
 MonoBehaviour:
   m_ObjectHideFlags: 1

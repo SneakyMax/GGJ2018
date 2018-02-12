@@ -24,6 +24,9 @@ namespace Depth
 
         public void Update()
         {
+            if (GameplayManager.Instance.AllowInput == false)
+                return;
+
             var percentCooledDown = (Time.time - lastBoostTime) / Cooldown;
             sub.Panel.AbilityIndicator.Radial.Percent = 1.0f - percentCooledDown;
 

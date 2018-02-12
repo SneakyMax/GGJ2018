@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Depth.Assets._Scripts.UI;
+using UnityEngine;
 
 namespace Depth.UI
 {
@@ -12,6 +13,7 @@ namespace Depth.UI
         public TorpedoIndicator TorpedoIndicator { get; private set; }
         public LockedOnWarning LockedOnWarning { get; private set; }
         public AbilityIndicator AbilityIndicator { get; private set; }
+        public HiddenIndicator HiddenIndicator { get; private set; }
 
         public void Awake()
         {
@@ -23,6 +25,7 @@ namespace Depth.UI
             TorpedoIndicator = GetComponentInChildren<TorpedoIndicator>(true);
             LockedOnWarning = GetComponentInChildren<LockedOnWarning>(true);
             AbilityIndicator = GetComponentInChildren<AbilityIndicator>(true);
+            HiddenIndicator = GetComponentInChildren<HiddenIndicator>(true);
         }
     }
 }

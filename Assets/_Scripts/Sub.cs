@@ -20,6 +20,7 @@ namespace Depth
         public SubParameters Parameters { get; private set; }
         public int InputPlayer { get; set; }
         public Ability[] Abilities { get; private set; }
+        public bool IsHidden { get; private set; }
 
         public PlayerCam Cam;
 
@@ -34,6 +35,7 @@ namespace Depth
         public PlayerPanel Panel;
 
         private float maxSubHeight;
+        private Rigidbody thisRigidbody;
 
         public void Awake()
         {
@@ -57,6 +59,7 @@ namespace Depth
             IsDestroyed = true;
 
             maxSubHeight = GameObject.FindGameObjectWithTag("Ceiling").transform.position.y;
+            thisRigidbody = GetComponentInChildren<Rigidbody>();
         }
 
         public void Start()
@@ -163,6 +166,9 @@ namespace Depth
                 Helpers.WorldPointToScreenSpace(transform.position + (transform.forward * AimDistance), SubCamera));
 
             Parameters = Modifiers.GetParameters();
+
+            IsHidden = thisRigidbody.velocity.magnitude < 1;
+            Panel.HiddenIndicator.gameObject.SetActive(IsHidden);
         }
 
         public void FixedUpdate()

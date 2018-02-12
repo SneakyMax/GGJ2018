@@ -37,6 +37,9 @@ namespace Depth
 
         public void Tag(Taggable taggable, int player, float duration)
         {
+            if (taggable.Active == false)
+                return;
+
             var existing = Tagged[player].FirstOrDefault(x => x.Taggable == taggable);
             if (existing != null)
             {

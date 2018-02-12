@@ -912,7 +912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f98eb1df41346c04a89c3acf80ca47b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: e7e9d92d17344ab4bbe409763e457a8d, type: 3}
   Cooldown: 25
   Name: Shrink
   shrinkSize: 0.2
@@ -931,17 +931,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bubbles: {fileID: 114212297024771244}
   BackwardBubbles: {fileID: 114310470447388690}
-  MaxRaiseLowerSpeed: 1
-  MaxTurnRate: 1
-  MaxSpeed: 1
-  MaxStrafe: 1
-  MaxPitch: 1
-  AccelerationRate: 1
-  BrakeRate: 1
-  TurnAcceleration: 1
-  FloatSinkRate: 1
-  PitchRate: 1
-  StrafeRate: 1
+  MaxRaiseLowerSpeed: 0.5
+  MaxTurnRate: 2
+  MaxSpeed: 2
+  MaxStrafe: 3
+  MaxPitch: 3
+  AccelerationRate: 2
+  BrakeRate: 0.25
+  TurnAcceleration: 3
+  FloatSinkRate: 0.5
+  PitchRate: 2
+  StrafeRate: 2
   CeilingForce: 1
   CeilingCorrect: 1
   FireInterval: 1

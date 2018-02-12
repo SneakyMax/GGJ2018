@@ -999,13 +999,13 @@ MonoBehaviour:
   Bubbles: {fileID: 114446104128761614}
   BackwardBubbles: {fileID: 114008207028980620}
   MaxRaiseLowerSpeed: 1
-  MaxTurnRate: 1
-  MaxSpeed: 1
-  MaxStrafe: 1
-  MaxPitch: 1
-  AccelerationRate: 1
+  MaxTurnRate: 2
+  MaxSpeed: 0.25
+  MaxStrafe: 3
+  MaxPitch: 3
+  AccelerationRate: 0.5
   BrakeRate: 1
-  TurnAcceleration: 1
+  TurnAcceleration: 3
   FloatSinkRate: 1
   PitchRate: 1
   StrafeRate: 1
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dca6c5f07ba5f40a305a6e9d5ec7f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 7a969a8fc66d01b4d99e7e2166ec6b96, type: 3}
   Cooldown: 5
   Name: Multi Blast
   TorpedoPrefab: {fileID: 1255884240634904, guid: 68776cacd37e7994c938e8266e50de27,

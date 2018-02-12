@@ -572,6 +572,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: e122ada9d96bac34c8da8236bde93ebe, type: 3}
   Cooldown: 30
   Name: Super Radar
+  NotificationTextPrefab: {fileID: 1710567625885462, guid: dc3a58003dc1a9b4ab6190889dcf0a69,
+    type: 2}
   TagTime: 10
 --- !u!198 &198023261537662712
 ParticleSystem:

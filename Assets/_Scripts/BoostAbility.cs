@@ -5,6 +5,7 @@ namespace Depth
 {
     public class BoostAbility : Ability
     {
+        public GameObject NotificationTextPrefab;
         public ParticleGroup BoostParticles;
 
         public float BoostForce = 1;
@@ -39,6 +40,8 @@ namespace Depth
 
             if (sub.InputState.Buttons.X == ButtonState.Pressed && percentCooledDown >= 1)
             {
+                var textInstance = Instantiate(NotificationTextPrefab, sub.Panel.transform, false);
+                textInstance.GetComponent<FormattableText>().Format("Boost");
                 isBoosting = true;
                 lastBoostTime = Time.time;
             }

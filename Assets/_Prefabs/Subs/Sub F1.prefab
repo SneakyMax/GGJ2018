@@ -436,6 +436,8 @@ MonoBehaviour:
   Cooldown: 30
   Name: Cloak
   CloakTime: 10
+  NotificationTextPrefab: {fileID: 1710567625885462, guid: dc3a58003dc1a9b4ab6190889dcf0a69,
+    type: 2}
 --- !u!114 &114310470447388690
 MonoBehaviour:
   m_ObjectHideFlags: 1

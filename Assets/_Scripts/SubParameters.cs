@@ -28,24 +28,24 @@ namespace Depth
         public float MinDistTransisionDist { get; private set; }
         public Color FogColor { get; private set; }
 
-        public SubParameters(SubModifiers modifiers)
+        public SubParameters(SubModifiers modifiers, float movementModifier, float torpedoRate)
         {
             var baseParams = BaseSubParameters.Instance;
 
-            MaxRaiseLowerSpeed = baseParams.MaxRaiseLowerSpeed * modifiers.MaxRaiseLowerSpeed;
-            MaxTurnRate = baseParams.MaxTurnRate * modifiers.MaxTurnRate;
-            MaxSpeed = baseParams.MaxSpeed * modifiers.MaxSpeed;
-            MaxStrafe = baseParams.MaxStrafe * modifiers.MaxStrafe;
-            MaxPitch = baseParams.MaxPitch * modifiers.MaxPitch;
-            AccelerationRate = baseParams.AccelerationRate * modifiers.AccelerationRate;
-            BrakeRate = baseParams.BrakeRate * modifiers.BrakeRate;
-            TurnAcceleration = baseParams.TurnAcceleration * modifiers.TurnAcceleration;
-            FloatSinkRate = baseParams.FloatSinkRate * modifiers.FloatSinkRate;
-            PitchRate = baseParams.PitchRate * modifiers.PitchRate;
-            StrafeRate = baseParams.StrafeRate * modifiers.StrafeRate;
+            MaxRaiseLowerSpeed = baseParams.MaxRaiseLowerSpeed * modifiers.MaxRaiseLowerSpeed * movementModifier;
+            MaxTurnRate = baseParams.MaxTurnRate * modifiers.MaxTurnRate * movementModifier;
+            MaxSpeed = baseParams.MaxSpeed * modifiers.MaxSpeed * movementModifier;
+            MaxStrafe = baseParams.MaxStrafe * modifiers.MaxStrafe * movementModifier;
+            MaxPitch = baseParams.MaxPitch * modifiers.MaxPitch * movementModifier;
+            AccelerationRate = baseParams.AccelerationRate * modifiers.AccelerationRate * movementModifier;
+            BrakeRate = baseParams.BrakeRate * modifiers.BrakeRate * movementModifier;
+            TurnAcceleration = baseParams.TurnAcceleration * modifiers.TurnAcceleration * movementModifier;
+            FloatSinkRate = baseParams.FloatSinkRate * modifiers.FloatSinkRate * movementModifier;
+            PitchRate = baseParams.PitchRate * modifiers.PitchRate * movementModifier;
+            StrafeRate = baseParams.StrafeRate * modifiers.StrafeRate * movementModifier;
             CeilingForce = baseParams.CeilingForce * modifiers.CeilingForce;
             CeilingCorrect = baseParams.CeilingCorrect * modifiers.CeilingCorrect;
-            FireInterval = baseParams.FireInterval * modifiers.FireInterval;
+            FireInterval = baseParams.FireInterval * modifiers.FireInterval * torpedoRate;
             MineInterval = baseParams.MineInterval * modifiers.MineInterval;
             IdentifiedTime = baseParams.IdentifiedTime * modifiers.IdentifiedTime;
             PingRange = baseParams.PingRange * modifiers.PingRange;

@@ -648,6 +648,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: e4d6022775f9c4d44890b79dc1c406bc, type: 3}
   Cooldown: 12
   Name: Shield
+  NotificationTextPrefab: {fileID: 1710567625885462, guid: dc3a58003dc1a9b4ab6190889dcf0a69,
+    type: 2}
   ShieldMesh: {fileID: 23668848727009946}
   ShieldTime: 3
   ShieldAnimateSpeed: 1

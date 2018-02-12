@@ -26,6 +26,8 @@ namespace Depth
         
         private float gameStartTime;
         private GamePadState previousState;
+
+        public string[] music = new string[] { "music_underseashell_02", "music_undersea3_2" };
         
         public void Awake()
         {
@@ -41,6 +43,8 @@ namespace Depth
                 splash.SetActive(false);
             }
             StartCoroutine(StartCountdownCo());
+
+            SoundManager.PlaySound(music[UnityEngine.Random.Range(0, music.Length)]);
         }
 
         private IEnumerator StartCountdownCo()

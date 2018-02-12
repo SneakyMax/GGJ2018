@@ -29,6 +29,7 @@ public class PickUpSpawnPoint : MonoBehaviour
             {
                 empty = false;
                 ThisPickup = Instantiate(pickups[Random.Range(0, pickups.Length)], transform.position, Quaternion.identity);
+                timer = 0;
             }
         }
         if (empty == false && ThisPickup == null)

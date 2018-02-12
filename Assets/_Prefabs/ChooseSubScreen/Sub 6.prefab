@@ -203,6 +203,8 @@ MonoBehaviour:
     invisible. '
   SpinSpeed: 100
   InGameSub: {fileID: 1266424407959402, guid: 751002ec9448f7d49bdd2cdd9021508b, type: 2}
+  SubImage: {fileID: 21300000, guid: bb5a988e8613a5a469bd6b1f56ee2669, type: 3}
+  Ability: Cloaking
 --- !u!136 &136231733729432272
 CapsuleCollider:
   m_ObjectHideFlags: 1

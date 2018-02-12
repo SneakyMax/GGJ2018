@@ -44,7 +44,7 @@ namespace Depth
             }
             StartCoroutine(StartCountdownCo());
 
-            SoundManager.PlaySound(music[UnityEngine.Random.Range(0, music.Length)]);
+            SoundManager.PlaySound(music[UnityEngine.Random.Range(0, music.Length)], 1, true);
         }
 
         private IEnumerator StartCountdownCo()

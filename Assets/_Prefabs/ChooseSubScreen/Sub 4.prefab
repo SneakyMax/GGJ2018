@@ -717,6 +717,8 @@ MonoBehaviour:
     attract unwanted attention."
   SpinSpeed: 100
   InGameSub: {fileID: 1323596891614702, guid: 3f26dbf03e81c9c4cbdf56d41be8ca28, type: 2}
+  SubImage: {fileID: 21300000, guid: 114b6423b4950904ba3aacb53581fda0, type: 3}
+  Ability: Speed Boost
 --- !u!136 &136828635625942820
 CapsuleCollider:
   m_ObjectHideFlags: 1

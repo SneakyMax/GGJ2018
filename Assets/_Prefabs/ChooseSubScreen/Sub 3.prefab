@@ -473,6 +473,8 @@ MonoBehaviour:
     minefield.  Or, if need be, distract the enemy and make an escape.
   SpinSpeed: 100
   InGameSub: {fileID: 1906540287590822, guid: 50ebeae4c371eb34a851d7d5b0a4614e, type: 2}
+  SubImage: {fileID: 21300000, guid: 6fd8770f62cd53c49b702c82867b61fa, type: 3}
+  Ability: Cluster Torpedo
 --- !u!136 &136152892757644646
 CapsuleCollider:
   m_ObjectHideFlags: 1

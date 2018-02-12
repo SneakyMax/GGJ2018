@@ -130,3 +130,5 @@ MonoBehaviour:
     her shield up, she isn\u2019t the most maneuverable."
   SpinSpeed: 100
   InGameSub: {fileID: 1610422733908446, guid: 88f155b46f7ee464ba3170c022eabbac, type: 2}
+  SubImage: {fileID: 21300000, guid: b67a4599270a1ba41a9939462bc182b2, type: 3}
+  Ability: Shield

@@ -13,8 +13,8 @@ namespace Depth.ChooseSubScreen
     {
         public int MainLevelIndex;
         public SubInfo[] Subs;
-        public GameObject[] PressStarts;
         public GameObject Loading;
+        public RectTransform[] Areas;
 
         public Image FadeOverlay;
         public float FadeTime = 0.75f;
@@ -26,12 +26,48 @@ namespace Depth.ChooseSubScreen
 
         private bool isStarting;
 
+        private Image[] middleImage;
+        private Image[] rightOneImage;
+        private Image[] rightTwoImage;
+        private Image[] leftOneImage;
+        private Image[] leftTwoImage;
+
+        private Text[] subNames;
+        private FormattableText[] subAbilities;
+        private FormattableText[] subInfos;
+
         public void Awake()
         {
             canGoLeftOrRight = new bool[4];
             currentSubInfos = new SubInfo[4];
             joined = new bool[4];
             FadeOverlay.color = new Color(FadeOverlay.color.r, FadeOverlay.color.g, FadeOverlay.color.b, 1);
+
+            middleImage = new Image[4];
+            rightOneImage = new Image[4];
+            rightTwoImage = new Image[4];
+            leftOneImage = new Image[4];
+            leftTwoImage = new Image[4];
+
+            subNames = new Text[4];
+            subAbilities = new FormattableText[4];
+            subInfos = new FormattableText[4];
+
+            for (var player = 0; player < 4; player++)
+            {
+                var area = Areas[player];
+                var imagePositions = area.Find("Image Positions");
+                middleImage[player] = imagePositions.Find("Middle").GetComponent<Image>();
+                rightOneImage[player] = imagePositions.Find("Right 1").GetComponent<Image>();
+                rightTwoImage[player] = imagePositions.Find("Right 2").GetComponent<Image>();
+                leftOneImage[player] = imagePositions.Find("Left 1").GetComponent<Image>();
+                leftTwoImage[player] = imagePositions.Find("Left 2").GetComponent<Image>();
+
+                var infoArea = area.Find("Info Background").Find("Texts").Find("Padding");
+                subNames[player] = infoArea.Find("Sub Name").GetComponent<Text>();
+                subAbilities[player] = infoArea.Find("Ability Text").GetComponent<FormattableText>();
+                subInfos[player] = infoArea.Find("Info Text").GetComponent<FormattableText>();
+            }
         }
 
         public void Start()
@@ -98,8 +134,10 @@ namespace Depth.ChooseSubScreen
         private void DoJoin(int player)
         {
             joined[player] = true;
-            PressStarts[player].SetActive(false);
-            currentSubInfos[player] = Subs[Random.Range(0, Subs.Length)];
+            //PressStarts[player].SetActive(false);
+            var subIndex = Random.Range(0, Subs.Length);
+            currentSubInfos[player] = Subs[subIndex];
+            RecalcSubData(player, subIndex);
             CameraRenderers.Instance.Show(currentSubInfos[player].gameObject, player);
         }
 
@@ -130,26 +168,50 @@ namespace Depth.ChooseSubScreen
             }
         }
 
+        private int GetIndex(int desiredIndex)
+        {
+            if (desiredIndex < 0)
+                return desiredIndex + Subs.Length;
+            return desiredIndex % Subs.Length;
+        }
+
         private void NextSub(int player)
         {
+            SoundManager.PlaySound("ship_select_R");
             var currentSub = currentSubInfos[player];
             var currentIndex = new List<SubInfo>(Subs).IndexOf(currentSub);
-            var nextIndex = (currentIndex + 1) % Subs.Length;
+            var nextIndex = GetIndex(currentIndex + 1);
             var nextSub = Subs[nextIndex];
+
+            RecalcSubData(player, nextIndex);
 
             currentSubInfos[player] = nextSub;
 
             CameraRenderers.Instance.Show(nextSub.gameObject, player);
         }
 
+        private void RecalcSubData(int player, int currentIndex)
+        {
+            middleImage[player].sprite = Subs[GetIndex(currentIndex)].SubImage;
+            leftOneImage[player].sprite = Subs[GetIndex(currentIndex - 1)].SubImage;
+            leftTwoImage[player].sprite = Subs[GetIndex(currentIndex - 2)].SubImage;
+            rightOneImage[player].sprite = Subs[GetIndex(currentIndex + 1)].SubImage;
+            rightTwoImage[player].sprite = Subs[GetIndex(currentIndex + 2)].SubImage;
+
+            subNames[player].text = Subs[GetIndex(currentIndex)].Name;
+            subAbilities[player].Format(Subs[GetIndex(currentIndex)].Ability);
+            subInfos[player].Format(Subs[GetIndex(currentIndex)].Discription);
+        }
+
         private void PreviousSub(int player)
         {
+            SoundManager.PlaySound("ship_select_L");
             var currentSub = currentSubInfos[player];
             var currentIndex = new List<SubInfo>(Subs).IndexOf(currentSub);
-            var nextIndex = currentIndex - 1;
-            if (nextIndex < 0)
-                nextIndex = Subs.Length - 1;
+            var nextIndex = GetIndex(currentIndex - 1);
             var nextSub = Subs[nextIndex];
+
+            RecalcSubData(player, nextIndex);
 
             currentSubInfos[player] = nextSub;
 

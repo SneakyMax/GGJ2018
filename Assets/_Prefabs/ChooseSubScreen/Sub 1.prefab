@@ -130,3 +130,5 @@ MonoBehaviour:
     waters.
   SpinSpeed: 100
   InGameSub: {fileID: 1557720911321380, guid: 2cb22c88799babb4a8660b56bad51e8b, type: 2}
+  SubImage: {fileID: 21300000, guid: 253043b507f75b442b3b3dfb7264b78d, type: 3}
+  Ability: Mega Radar

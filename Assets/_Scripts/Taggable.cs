@@ -5,6 +5,8 @@ namespace Depth
 {
     public class Taggable : MonoBehaviour
     {
+        public bool Active { get; set; }
+
         public Rigidbody Rigidbody { get; private set; }
 
         public int[] Layers { get { return layers; } }
@@ -21,6 +23,7 @@ namespace Depth
 
         private void Awake()
         {
+            Active = true;
             subRenderers = new List<TaggableRenderer>();
             Rigidbody = GetComponentInChildren<Rigidbody>();
         }

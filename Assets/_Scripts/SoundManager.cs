@@ -6,6 +6,7 @@ namespace Depth
     public class SoundManager : MonoBehaviour
     {
         public static SoundManager Instance { get; private set; }
+        public float AttenuateDistance;
 
         private IDictionary<string, AudioSource> sounds;
 

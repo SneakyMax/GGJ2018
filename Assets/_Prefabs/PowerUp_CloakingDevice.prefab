@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114193823076240190}
   - component: {fileID: 135114739181513198}
   - component: {fileID: 114341721429529654}
+  - component: {fileID: 114941620094490834}
   m_Layer: 0
   m_Name: PowerUp_CloakingDevice
   m_TagString: Untagged
@@ -110,6 +111,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Time: 30
   Name: Cloak
+--- !u!114 &114941620094490834
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1512145960660358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0c856afe5a714428b5cd142e0d3029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpinSpeed: 100
 --- !u!135 &135114739181513198
 SphereCollider:
   m_ObjectHideFlags: 1

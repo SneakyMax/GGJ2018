@@ -93,11 +93,6 @@ namespace Depth
                     GameEnded();
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
         }
 
         private void GameEnded()

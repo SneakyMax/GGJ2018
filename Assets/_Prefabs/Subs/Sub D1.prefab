@@ -1141,12 +1141,12 @@ MonoBehaviour:
   BackwardBubbles: {fileID: 114189677365688032}
   MaxRaiseLowerSpeed: 1
   MaxTurnRate: 0.4
-  MaxSpeed: 2.2
+  MaxSpeed: 1.96
   MaxStrafe: 0.5
   MaxPitch: 0.5
-  AccelerationRate: 2.2
+  AccelerationRate: 1.63
   BrakeRate: 0.5
-  TurnAcceleration: 1
+  TurnAcceleration: 0.5
   FloatSinkRate: 1
   PitchRate: 0.5
   StrafeRate: 0.5

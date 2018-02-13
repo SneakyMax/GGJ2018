@@ -46,6 +46,10 @@ namespace Depth
                 if (!String.IsNullOrEmpty(SoundName))
                     SoundManager.PlaySound(SoundName);
 
+                SoundManager.PlaySound("burstshot_ability");
+
+                SoundManager.PlaySound("TorpedoFire_2,5sec", 0.6f);
+
                 lastFireTime = Time.time;
                 FireTorpedo(torpedoPoint1);
                 FireTorpedo(torpedoPoint2);
@@ -62,7 +66,6 @@ namespace Depth
             var torpedo = newTorpedoObj.GetComponent<Torpedo>();
             torpedo.Parent = sub;
     
-            SoundManager.PlaySound("TorpedoFire_2,5sec");
     
             TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
         }

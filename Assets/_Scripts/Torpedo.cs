@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Depth
@@ -28,6 +29,7 @@ namespace Depth
         public GameObject ExplosionPrefab;
 
         private Rigidbody body;
+        private Collider collider;
 
         public CanBeLockedOnTo Target;
 
@@ -38,10 +40,12 @@ namespace Depth
         public void Awake()
         {
             body = GetComponent<Rigidbody>();
+            collider = GetComponentInChildren<Collider>();
         }
 
         public void Start()
         {
+            collider.enabled = false;
             speed = InitialSpeed + Parent.GetComponent<Rigidbody>().velocity.magnitude;
             direction = transform.forward;
 
@@ -50,6 +54,7 @@ namespace Depth
                 component.enabled = false;
             }
 
+            StartCoroutine(EnableCollision());
             StartCoroutine(BlowUpAfterTime());
             StartCoroutine(ArmAfter());
         }
@@ -58,6 +63,12 @@ namespace Depth
         {
             yield return new WaitForSeconds(MaxLifetime);
             Explode();
+        }
+
+        private IEnumerator EnableCollision()
+        {
+            yield return new WaitForSeconds(0.25f);
+            collider.enabled = true;
         }
 
         private IEnumerator ArmAfter()
@@ -163,7 +174,23 @@ namespace Depth
             //   loop for each player,
             //   check the distance to the torpedo or mine
             // attenuate the sound of the explosion: 100% if direct hit to player, fade out to 10% if more than half arena away
-            SoundManager.PlaySound("explosion_far1");
+
+            float closest = 99999;
+            foreach (var player in SubManager.Instance.Subs)
+            {
+                var distance = Vector3.Distance(transform.position, player.transform.position);
+                if (distance < closest)
+                {
+                    closest = distance;
+                }
+            }
+
+            var attenuateDist = SoundManager.Instance.AttenuateDistance;
+
+            var percentOfMax = Mathf.Clamp01(closest / attenuateDist);
+            var volume = Mathf.Lerp(1, 0.1f, Mathf.Pow(percentOfMax, 2));
+            
+            SoundManager.PlaySound("explosion_far1", volume);
 
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);
             Destroy(gameObject);

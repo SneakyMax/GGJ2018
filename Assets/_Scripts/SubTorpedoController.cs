@@ -43,7 +43,7 @@ namespace Depth
             var torpedo = newTorpedoObj.GetComponent<Torpedo>();
             torpedo.Parent = sub;
 
-            SoundManager.PlaySound("TorpedoFire_2,5sec");
+            SoundManager.PlaySound("TorpedoFire_2,5sec", 0.6f);
 
             TaggableManager.Instance.TagForAllBut(sub.Taggable, sub.Player, 2);
         }

@@ -94,7 +94,7 @@ namespace Depth.ChooseSubScreen
                 if (isStarting)
                     return;
                 var state = GamePad.GetState((PlayerIndex) player);
-                if (state.Buttons.Back == ButtonState.Pressed)
+                if (state.Buttons.Start == ButtonState.Pressed)
                 {
                     isStarting = true;
                     StartCoroutine(StartStarting());

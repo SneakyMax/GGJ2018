@@ -310,7 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialSpeed: 0
   Acceleration: 0.3
-  MaxSpeed: 20
+  MaxSpeed: 30
   HomingConeHalfAngle: 10
   HomingTurnRate: 50
   MaxLifetime: 15

@@ -3627,6 +3627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1535072580}
   - component: {fileID: 1535072581}
+  - component: {fileID: 1535072582}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -3674,6 +3675,17 @@ MonoBehaviour:
   - {fileID: 2123906750}
   FadeOverlay: {fileID: 522586963}
   FadeTime: 0.75
+--- !u!114 &1535072582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1535072579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9966e691e69a53041bcc8e4e7e7dbfff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1556695917
 GameObject:
   m_ObjectHideFlags: 0

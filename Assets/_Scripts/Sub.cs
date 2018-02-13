@@ -134,37 +134,34 @@ namespace Depth
 
         private void BlowUp(int playerCaused)
         {
+            StartCoroutine(BlowUpCoroutine(playerCaused));
+        }
+
+        private IEnumerator BlowUpCoroutine(int playerCaused)
+        {
             if (IsDestroyed)
-                return;
+                yield break;
 
             if (HasAbility("Shield") && GetComponentInChildren<ShieldAbility>().IsActive)
             {
-                return;
+                yield break;
             }
 
             if (HasPowerup("Shield"))
             {
-                return;
+                yield break;
             }
 
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);
 
             GetComponentInChildren<SubBody>(true).gameObject.SetActive(false);
             IsDestroyed = true;
-
-            Panel.DeadPanel.gameObject.SetActive(true);
-
+            
             if (playerCaused != Player)
                 SubManager.Instance.GetSub(playerCaused).GotKill();
 
-            // explosion of ship is done in the mine or torpedo
-            // SoundManager.PlaySound("explosion_far1");
-
-            StartCoroutine(RespawnAfterDelay());
-        }
-
-        private IEnumerator RespawnAfterDelay()
-        {
+            yield return new WaitForSeconds(1);
+            Panel.DeadPanel.gameObject.SetActive(true);
             yield return new WaitForSeconds(RespawnDelay);
             Respawn();
         }
@@ -183,16 +180,22 @@ namespace Depth
         public void GotPowerup(Powerup powerup)
         {
             SoundManager.PlaySound("pickup_ability");
-            var textInstance = Instantiate(NotificationTextPrefab, Panel.transform, false);
-            textInstance.GetComponent<FormattableText>().Format(String.Format("{0} ({1}s)", powerup.Name, powerup.Time));
+            ShowNotification("{0} ({1}s)", powerup.Name, powerup.Time);
             StartCoroutine(DisablePowerupAfterTime(powerup));
             powerups.Add(powerup.Name);
+        }
+
+        public void ShowNotification(string text, params object[] format)
+        {
+            var textInstance = Instantiate(NotificationTextPrefab, Panel.transform, false);
+            textInstance.GetComponent<FormattableText>().Format(String.Format(text, format));
         }
 
         private IEnumerator DisablePowerupAfterTime(Powerup powerup)
         {
             yield return new WaitForSeconds(powerup.Time);
             powerups.Remove(powerup.Name);
+            ShowNotification("{0} Wore Off", powerup.Name);
         }
 
         public void Update()

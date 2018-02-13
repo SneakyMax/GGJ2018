@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114383299792953998}
   - component: {fileID: 135668448675371280}
   - component: {fileID: 114976307791046446}
+  - component: {fileID: 114193206228992864}
   m_Layer: 0
   m_Name: PowerUp_Boost
   m_TagString: Untagged
@@ -85,6 +86,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1855063926520768}
   m_Mesh: {fileID: 4300000, guid: 21bd2b573ba9b324da7d81197239f7e6, type: 3}
+--- !u!114 &114193206228992864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1855063926520768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0c856afe5a714428b5cd142e0d3029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpinSpeed: 100
 --- !u!114 &114383299792953998
 MonoBehaviour:
   m_ObjectHideFlags: 1
